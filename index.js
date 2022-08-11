@@ -7,10 +7,10 @@ const supplicationRouter = require("./routes/supplications.routes");
 const bookRouter = require("./routes/books.routes");
 const groupRouter = require("./routes/groups.routes");
 const visaRouter = require("./routes/visa.routes"); */
-const authRouter = require("./routes/auth.routes");
-const userRouter = require("./routes/users.routes");
-const jobRouter = require("./routes/jobs.routes");
-require("../db/connect");
+const authRouter = require("./src/routes/auth.routes");
+const userRouter = require("./src/routes/users.routes");
+const jobRouter = require("./src/routes/jobs.routes");
+require("./db/connect");
 
 const app = express();
 const port = process.env.PORT || 5000;
