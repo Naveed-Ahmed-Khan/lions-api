@@ -14,12 +14,7 @@ async function signup(req, res) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
       const user = await User.create({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        contact: req.body.contact,
-        address: req.body.address,
-        profilePic: req.body.profilePic,
+        ...req.body,
         password: hashedPassword,
       });
       console.log(user);
@@ -32,6 +27,7 @@ async function signup(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////
 async function signin(req, res) {
+  console.log(req);
   try {
     const preUser = await User.findOne({ email: req.body.email });
     if (!preUser) {
@@ -49,7 +45,14 @@ async function signin(req, res) {
           { expiresIn: "1h" }
         );
         // console.log(token);
-        res.status(200).json({ userID: preUser._id, token });
+        console.log({ userID: preUser._id, token });
+        res.status(200).json({
+          userId: preUser._id,
+          userType: preUser.userType,
+          profilePic: preUser.profilePic,
+          name: preUser.name,
+          token,
+        });
       }
     }
   } catch (error) {

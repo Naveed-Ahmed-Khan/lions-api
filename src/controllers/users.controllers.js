@@ -21,10 +21,31 @@ async function addUser(req, res) {
       });
       await addUser.save();
       res.status(201).json(addUser);
-      console.log(addUser);
+      // console.log(addUser);
     }
   } catch (error) {
     res.status(404).send(error.message);
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function getTutors(req, res) {
+  try {
+    const tutors = await User.find({ userType: "tutor" });
+    res.status(200).json(tutors);
+    // console.log(tutors);
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+}
+//////////////////////////////////////////////////////////////////////////////
+async function getStudents(req, res) {
+  try {
+    const students = await User.find({ userType: "student" });
+    res.status(200).json(students);
+    // console.log(students);
+  } catch (error) {
+    res.status(404).send({ error: error.message });
   }
 }
 
@@ -33,9 +54,9 @@ async function getUsers(req, res) {
   try {
     const usersData = await User.find();
     res.status(200).json(usersData);
-    console.log(usersData);
+    // console.log(usersData);
   } catch (error) {
-    res.status(404).send(error);
+    res.status(404).send({ error: error.message });
   }
 }
 
@@ -45,9 +66,9 @@ async function getSingleUser(req, res) {
   try {
     const userData = await User.findById(userId);
     res.status(200).json(userData);
-    console.log(userData);
+    // console.log(userData);
   } catch (error) {
-    res.status(404).send(error);
+    res.status(404).send({ error: error.message });
   }
 }
 
@@ -63,4 +84,11 @@ async function deleteUser(req, res) {
   }
 }
 
-module.exports = { getUsers, getSingleUser, addUser, deleteUser };
+module.exports = {
+  getUsers,
+  getTutors,
+  getStudents,
+  getSingleUser,
+  addUser,
+  deleteUser,
+};
