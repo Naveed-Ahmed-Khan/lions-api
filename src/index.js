@@ -25,8 +25,7 @@ app.use(jobRouter);
 app.use(bookRouter);
 app.use(supplicationRouter);
 app.use(bookRequestRouter);
-app.use(groupRouter);
-app.use(visaRouter); */
+app.use(groupRouter);*/
 
 app.get("/", (req, res) => res.send("Hello Server!"));
 app.listen(port, () => console.log(`Server is listening on port ${port}`));
