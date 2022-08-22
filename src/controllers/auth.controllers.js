@@ -21,7 +21,7 @@ async function signup(req, res) {
       res.status(201).json(user);
     }
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(404).send(error.message);
   }
 }
 
@@ -51,12 +51,13 @@ async function signin(req, res) {
           userType: preUser.userType,
           profilePic: preUser.profilePic,
           name: preUser.name,
+          qualification: preUser.qualification,
           token,
         });
       }
     }
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(404).send(error.message);
   }
 }
 

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Id = mongoose.Schema.Types.ObjectId;
 const JobSchema = new mongoose.Schema({
-  user_id: { type: Id, ref: "User", required: false },
+  user_id: { type: Id, ref: "User", required: true },
   subjects: { type: Array, required: true },
   class: { type: Array, required: true },
   institute: { type: String, required: true },
@@ -15,6 +15,7 @@ const JobSchema = new mongoose.Schema({
   description: { type: String, required: true },
   budget: { type: String, required: true },
   isFeatured: { type: Boolean, required: true },
+  jobStatus: { type: String, required: true },
 });
 
 const Job = new mongoose.model("Job", JobSchema);

@@ -1,4 +1,5 @@
 const Job = require("../models/job.model");
+const Application = require("../models/application.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addJob(req, res) {
@@ -21,6 +22,8 @@ async function getJobs(req, res) {
     res.status(404).json({ error });
   }
 }
+
+//////////////////////////////////////////////////////////////////////////////
 async function getMyJobs(req, res) {
   try {
     const myJobs = await Job.find({ user_id: req.params.id })
@@ -46,6 +49,22 @@ async function getSingleJob(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function updateApplicants(req, res) {
+  const JobId = req.params.id;
+  try {
+    const JobData = await Job.findById(JobId);
+    const newApplicants = JobData.applicants.push(req.body);
+    const updatedJob = await Job.findByIdAndUpdate(JobId, {
+      applicants: newApplicants,
+    });
+    res.status(200).json(updatedJob);
+    console.log(JobData);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function deleteJob(req, res) {
   const JobId = req.params.id;
   try {
@@ -57,4 +76,11 @@ async function deleteJob(req, res) {
   }
 }
 
-module.exports = { getJobs, getMyJobs, getSingleJob, addJob, deleteJob };
+module.exports = {
+  updateApplicants,
+  getJobs,
+  getMyJobs,
+  getSingleJob,
+  addJob,
+  deleteJob,
+};

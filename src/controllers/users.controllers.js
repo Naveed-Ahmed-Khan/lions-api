@@ -38,6 +38,7 @@ async function getTutors(req, res) {
     res.status(404).send({ error: error.message });
   }
 }
+
 //////////////////////////////////////////////////////////////////////////////
 async function getStudents(req, res) {
   try {
@@ -73,6 +74,19 @@ async function getSingleUser(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function updateTutorProfile(req, res) {
+  const userId = req.params.id;
+  try {
+    const userData = await User.findByIdAndUpdate(userId, { ...req.body });
+
+    res.status(200).json(userData);
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function deleteUser(req, res) {
   const userId = req.params.id;
   try {
@@ -91,4 +105,5 @@ module.exports = {
   getSingleUser,
   addUser,
   deleteUser,
+  updateTutorProfile,
 };
