@@ -11,7 +11,6 @@ const authRouter = require("./routes/auth.routes");
 const userRouter = require("./routes/users.routes");
 const jobRouter = require("./routes/jobs.routes");
 const applicationRouter = require("./routes/applications.routes");
-const profileRouter = require("./routes/profile.routes.js");
 require("../db/connect");
 
 const app = express();
@@ -24,7 +23,7 @@ app.use(applicationRouter);
 app.use(authRouter);
 app.use(userRouter);
 app.use(jobRouter);
-app.use(profileRouter);
+
 /*app.use(videoRouter);
 app.use(bookRouter);
 app.use(supplicationRouter);
