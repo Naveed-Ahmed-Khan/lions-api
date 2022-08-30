@@ -16,14 +16,17 @@ const UserSchema = new mongoose.Schema({
   profilePic: { type: String, required: false },
   bannerImage: { type: String, required: false },
   teachingMode: { type: String, required: false },
+  teachingModes: { type: Array, required: true },
   aboutMe: { type: String, required: false },
   achievements: { type: String, required: false },
 
-  jobTitle: { type: String, required: false },
-  jobInstitute: { type: String, required: false },
-  experience: { type: Number, required: false },
-  subjects: { type: Array, required: false },
-  classes: { type: Array, required: false },
+  availableFrom: { type: String, required: false },
+  availableTo: { type: String, required: false },
+
+  allLocations: { type: Array, required: true },
+  allSubjects: { type: Array, required: true },
+  allClasses: { type: Array, required: true },
+  highestQualification: { type: Object, required: true },
 
   locations: [
     {
@@ -70,14 +73,6 @@ const UserSchema = new mongoose.Schema({
           content: { type: String, required: false },
         },
       ],
-    },
-  ],
-
-  reviews: [
-    {
-      user_id: { type: Id, ref: "User" },
-      rating: { type: Number, default: 0 },
-      comment: { type: String, required: false },
     },
   ],
 

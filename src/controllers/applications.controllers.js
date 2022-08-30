@@ -78,14 +78,12 @@ async function getSingleApplication(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function updateApplicants(req, res) {
+async function updateApplicant(req, res) {
   const ApplicationId = req.params.id;
   try {
     const updatedApplication = await Application.findByIdAndUpdate(
       ApplicationId,
-      {
-        isSelected: true,
-      }
+      { ...req.body }
     );
     res.status(200).json(updatedApplication);
     console.log(updatedApplication);
@@ -112,6 +110,6 @@ module.exports = {
   getJobApplications,
   getMyApplications,
   getSingleApplication,
-  updateApplicants,
+  updateApplicant,
   deleteApplication,
 };

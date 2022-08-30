@@ -14,8 +14,27 @@ async function addJob(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////
 async function getJobs(req, res) {
+  const { query } = req;
+
+  let filter = {};
+  if (query.qualification) {
+    filter["qualification"] = query.qualification;
+  }
+  if (query.subject) {
+    filter["subjects"] = query.subject;
+  }
+  if (query.class) {
+    filter["class"] = query.class;
+  }
+  /* if (query.city) {
+    filter["locations.city"] = query.city;
+  }
+  if (query.place) {
+    filter["locations.places"] = query.place;
+  } */
+
   try {
-    const jobs = await Job.find().populate("user_id").exec();
+    const jobs = await Job.find(filter).populate("user_id").exec();
     res.status(200).json(jobs);
     console.log(jobs);
   } catch (error) {

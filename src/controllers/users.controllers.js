@@ -30,8 +30,28 @@ async function addUser(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////
 async function getTutors(req, res) {
+  const { query } = req;
+
+  let filter = { userType: "tutor" };
+  if (query.qualification) {
+    filter["qualifications.degree"] = query.qualification;
+  }
+  if (query.subject) {
+    filter["subjectsTaught.name"] = query.subject;
+  }
+  if (query.class) {
+    filter["subjectsTaught.classes.title"] = query.class;
+  }
+  if (query.city) {
+    filter["locations.city"] = query.city;
+  }
+  if (query.place) {
+    filter["locations.places"] = query.place;
+  }
+
+  // console.log(filter);
   try {
-    const tutors = await User.find({ userType: "tutor" });
+    const tutors = await User.find(filter);
     res.status(200).json(tutors);
     // console.log(tutors);
   } catch (error) {
@@ -72,6 +92,18 @@ async function getSingleUser(req, res) {
     res.status(404).send({ error: error.message });
   }
 }
+
+/* //////////////////////////////////////////////////////////////////////////////
+async function getSingleUser(req, res) {
+  const name = req.params.id;
+  try {
+    const userData = await User.findOne({ name: name });
+    res.status(200).json(userData);
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+} */
 
 //////////////////////////////////////////////////////////////////////////////
 async function updateTutorProfile(req, res) {
