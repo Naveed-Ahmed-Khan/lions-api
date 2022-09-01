@@ -45,8 +45,8 @@ async function getTutors(req, res) {
   if (query.city) {
     filter["locations.city"] = query.city;
   }
-  if (query.place) {
-    filter["locations.places"] = query.place;
+  if (query.area) {
+    filter["locations.places"] = query.area;
   }
 
   // console.log(filter);

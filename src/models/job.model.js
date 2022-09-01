@@ -10,6 +10,10 @@ const JobSchema = new mongoose.Schema({
   qualification: { type: String, required: true },
   gender: { type: String, required: true },
   city: { type: String, required: true },
+  location: {
+    city: { type: String, required: true },
+    place: { type: String, required: true },
+  },
   experience: { type: Number, required: true },
   teachingMode: { type: String, required: true },
   description: { type: String, required: true },

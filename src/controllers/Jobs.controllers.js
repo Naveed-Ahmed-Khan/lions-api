@@ -26,12 +26,12 @@ async function getJobs(req, res) {
   if (query.class) {
     filter["class"] = query.class;
   }
-  /* if (query.city) {
-    filter["locations.city"] = query.city;
+  if (query.city) {
+    filter["location.city"] = query.city;
   }
-  if (query.place) {
-    filter["locations.places"] = query.place;
-  } */
+  if (query.area) {
+    filter["location.place"] = query.area;
+  }
 
   try {
     const jobs = await Job.find(filter).populate("user_id").exec();
