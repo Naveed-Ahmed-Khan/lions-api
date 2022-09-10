@@ -21,9 +21,9 @@ const corsOptions = {
   credentials: true,
 };
 
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
-app.use(cookieParser());
 
 app.use(applicationRouter);
 app.use(achievementRouter);
