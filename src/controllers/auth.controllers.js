@@ -54,7 +54,7 @@ async function signin(req, res) {
         // const prodOptions = {};
         console.log({ userId: preUser._id, token });
         res.cookie("token", token, prodOptions);
-        res.cookie("user_id", preUser._id.toString(), prodOptions);
+        // res.cookie("user_id", preUser._id.toString(), prodOptions);
         res.status(200).json(preUser);
         /* res.status(200).json({
           userId: preUser._id,
