@@ -45,11 +45,12 @@ async function signin(req, res) {
           // { expiresIn: "1h" }
         );
         // console.log(token);
-        const prodOptions = {
+        /* const prodOptions = {
           sameSite: "none",
           secure: true,
-          domain: process.env.BACKEND,
-        };
+          domain: "https://lion-tutors-api.herokuapp.com",
+        }; */
+        const prodOptions = {};
         console.log({ userId: preUser._id, token });
         res.cookie("token", token, prodOptions);
         res.cookie("user_id", preUser._id.toString(), prodOptions);
