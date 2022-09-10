@@ -1,9 +1,9 @@
-const City = require("../models/city.model");
+const Achievement = require("../models/achievement.model");
 
 //////////////////////////////////////////////////////////////////////////////
-async function addCity(req, res) {
+async function addAchievement(req, res) {
   try {
-    const data = City.create(req.body);
+    const data = await Achievement.create(req.body);
     res.status(201).json(data);
     // console.log(data);
   } catch (error) {
@@ -12,9 +12,9 @@ async function addCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getCities(req, res) {
+async function getAchievements(req, res) {
   try {
-    const data = await City.find();
+    const data = await Achievement.find();
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -23,10 +23,10 @@ async function getCities(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getSingleCity(req, res) {
-  const cityId = req.params.id;
+async function getSingleAchievement(req, res) {
+  const achievementId = req.params.id;
   try {
-    const data = await City.findById(cityId);
+    const data = await Achievement.findById(achievementId);
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -35,10 +35,10 @@ async function getSingleCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function updateCity(req, res) {
-  const cityId = req.params.id;
+async function updateAchievement(req, res) {
+  const achievementId = req.params.id;
   try {
-    const data = await City.findByIdAndUpdate(cityId, {
+    const data = await Achievement.findByIdAndUpdate(achievementId, {
       ...req.body,
     });
     res.status(200).json(data);
@@ -49,11 +49,11 @@ async function updateCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function deleteCity(req, res) {
-  const cityId = req.params.id;
+async function deleteAchievement(req, res) {
+  const achievementId = req.params.id;
   try {
-    await City.findByIdAndDelete(cityId);
-    res.status(200).json({ msg: "City Deleted" });
+    await Achievement.findByIdAndDelete(achievementId);
+    res.status(200).json({ msg: "Achievement Deleted" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: err.message });
@@ -61,9 +61,9 @@ async function deleteCity(req, res) {
 }
 
 module.exports = {
-  addCity,
-  getCities,
-  getSingleCity,
-  updateCity,
-  deleteCity,
+  addAchievement,
+  getAchievements,
+  getSingleAchievement,
+  updateAchievement,
+  deleteAchievement,
 };

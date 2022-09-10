@@ -21,7 +21,7 @@ async function signup(req, res) {
       res.status(201).json(user);
     }
   } catch (error) {
-    res.status(404).send(error.message);
+    res.status(404).send(error);
   }
 }
 
@@ -39,21 +39,25 @@ async function signin(req, res) {
       if (!auth) {
         res.status(404).json({ error: "Password is incorrect" });
       } else {
-        const token = await jwt.sign(
+        const token = jwt.sign(
           { id: preUser._id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1h" }
+          process.env.JWT_SECRET
+          // { expiresIn: "1h" }
         );
         // console.log(token);
-        console.log({ userID: preUser._id, token });
-        res.status(200).json({
+        console.log({ userId: preUser._id, token });
+        res.cookie("token", token);
+        res.cookie("user_id", preUser._id.toString());
+        res.status(200).json(preUser);
+        /* res.status(200).json({
           userId: preUser._id,
           userType: preUser.userType,
           profilePic: preUser.profilePic,
           name: preUser.name,
           qualification: preUser.qualification,
+          profileStatus: preUser.profileStatus,
           token,
-        });
+        }); */
       }
     }
   } catch (error) {

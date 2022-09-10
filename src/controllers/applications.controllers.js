@@ -5,7 +5,7 @@ async function addApplication(req, res) {
   try {
     const application = await Application.create(req.body);
     res.status(201).json(application);
-    console.log(application);
+    // console.log(application);
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -19,7 +19,7 @@ async function getApplications(req, res) {
       .populate("applicant_id")
       .exec();
     res.status(200).json(applications);
-    console.log(applications);
+    // console.log(applications);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -35,7 +35,7 @@ async function getJobApplications(req, res) {
       .populate("applicant_id")
       .exec();
     res.status(200).json(jobApplications);
-    console.log(jobApplications);
+    // console.log(jobApplications);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -56,7 +56,7 @@ async function getMyApplications(req, res) {
       })
       .exec();
     res.status(200).json(myApplications);
-    console.log(myApplications);
+    // console.log(myApplications);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -71,7 +71,7 @@ async function getSingleApplication(req, res) {
       .populate("applicant_id")
       .exec();
     res.status(200).json(ApplicationData);
-    console.log(ApplicationData);
+    // console.log(ApplicationData);
   } catch (error) {
     res.status(404).send(error);
   }
@@ -86,7 +86,7 @@ async function updateApplicant(req, res) {
       { ...req.body }
     );
     res.status(200).json(updatedApplication);
-    console.log(updatedApplication);
+    // console.log(updatedApplication);
   } catch (error) {
     res.status(404).send(error);
   }

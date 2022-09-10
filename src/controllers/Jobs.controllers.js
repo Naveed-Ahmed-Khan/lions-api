@@ -6,7 +6,7 @@ async function addJob(req, res) {
   try {
     const job = Job.create(req.body);
     res.status(201).json(job);
-    console.log(job);
+    // console.log(job);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -36,7 +36,7 @@ async function getJobs(req, res) {
   try {
     const jobs = await Job.find(filter).populate("user_id").exec();
     res.status(200).json(jobs);
-    console.log(jobs);
+    // console.log(jobs);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -49,7 +49,7 @@ async function getMyJobs(req, res) {
       .populate("user_id")
       .exec();
     res.status(200).json(myJobs);
-    console.log(myJobs);
+    // console.log(myJobs);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -61,7 +61,7 @@ async function getSingleJob(req, res) {
   try {
     const JobData = await Job.findById(JobId).populate("user_id").exec();
     res.status(200).json(JobData);
-    console.log(JobData);
+    // console.log(JobData);
   } catch (error) {
     res.status(404).send(error);
   }
@@ -77,7 +77,7 @@ async function updateApplicants(req, res) {
       applicants: newApplicants,
     });
     res.status(200).json(updatedJob);
-    console.log(JobData);
+    // console.log(JobData);
   } catch (error) {
     res.status(404).send(error);
   }

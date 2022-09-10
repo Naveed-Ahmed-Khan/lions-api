@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const Id = mongoose.Schema.Types.ObjectId;
 const JobSchema = new mongoose.Schema({
   user_id: { type: Id, ref: "User", required: true },
+  title: { type: String, required: true },
   subjects: { type: Array, required: true },
   class: { type: Array, required: true },
   institute: { type: String, required: true },
   duration: { type: String, required: true },
   qualification: { type: String, required: true },
   gender: { type: String, required: true },
-  city: { type: String, required: true },
+  city: { type: String, required: false },
   location: {
     city: { type: String, required: true },
     place: { type: String, required: true },

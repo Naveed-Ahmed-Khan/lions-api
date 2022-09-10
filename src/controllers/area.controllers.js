@@ -13,10 +13,20 @@ async function addArea(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////
 async function getAreas(req, res) {
+  const { query } = req;
+
+  console.log(query?.city);
+
   try {
-    const data = await Area.find().populate("city_id").exec();
-    res.status(200).json(data);
-    console.log(data);
+    let areas = [];
+    if (query?.city) {
+      const data = await Area.find().populate("city_id").exec();
+      areas = data.filter((area) => area.city_id.name === query.city);
+    } else {
+      areas = await Area.find().populate("city_id").exec();
+    }
+    res.status(200).json(areas);
+    // console.log(data);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -28,7 +38,7 @@ async function getSingleArea(req, res) {
   try {
     const data = await Area.findById(areaId).populate("city_id").exec();
     res.status(200).json(data);
-    console.log(data);
+    // console.log(data);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -42,7 +52,7 @@ async function updateArea(req, res) {
       ...req.body,
     });
     res.status(200).json(data);
-    console.log(JobData);
+    // console.log(JobData);
   } catch (error) {
     res.status(404).json({ error });
   }

@@ -1,9 +1,11 @@
-const City = require("../models/city.model");
+const Class = require("../models/class.model");
+const capitalize = require("../util/capitalize");
 
 //////////////////////////////////////////////////////////////////////////////
-async function addCity(req, res) {
+async function addClass(req, res) {
+  const name = capitalize(req.body.name);
   try {
-    const data = City.create(req.body);
+    const data = await Class.create({ name: name });
     res.status(201).json(data);
     // console.log(data);
   } catch (error) {
@@ -12,9 +14,9 @@ async function addCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getCities(req, res) {
+async function getClasses(req, res) {
   try {
-    const data = await City.find();
+    const data = await Class.find();
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -23,10 +25,10 @@ async function getCities(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getSingleCity(req, res) {
-  const cityId = req.params.id;
+async function getSingleClass(req, res) {
+  const classId = req.params.id;
   try {
-    const data = await City.findById(cityId);
+    const data = await Class.findById(classId);
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -35,11 +37,12 @@ async function getSingleCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function updateCity(req, res) {
-  const cityId = req.params.id;
+async function updateClass(req, res) {
+  const classId = req.params.id;
+  const name = capitalize(req.body.name);
   try {
-    const data = await City.findByIdAndUpdate(cityId, {
-      ...req.body,
+    const data = await Class.findByIdAndUpdate(classId, {
+      name: name,
     });
     res.status(200).json(data);
     // console.log(data);
@@ -49,11 +52,11 @@ async function updateCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function deleteCity(req, res) {
-  const cityId = req.params.id;
+async function deleteClass(req, res) {
+  const classId = req.params.id;
   try {
-    await City.findByIdAndDelete(cityId);
-    res.status(200).json({ msg: "City Deleted" });
+    await Class.findByIdAndDelete(classId);
+    res.status(200).json({ msg: "Class Deleted" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: err.message });
@@ -61,9 +64,9 @@ async function deleteCity(req, res) {
 }
 
 module.exports = {
-  addCity,
-  getCities,
-  getSingleCity,
-  updateCity,
-  deleteCity,
+  addClass,
+  getClasses,
+  getSingleClass,
+  updateClass,
+  deleteClass,
 };

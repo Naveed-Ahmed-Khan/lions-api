@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   mobile: { type: Number, required: false },
   watsapp: { type: Number, required: false },
   city: { type: String, required: true },
+  area: { type: String, required: false },
   address: { type: String, required: true },
   profilePic: { type: String, required: false },
   bannerImage: { type: String, required: false },
@@ -26,7 +27,7 @@ const UserSchema = new mongoose.Schema({
   allLocations: { type: Array, required: true },
   allSubjects: { type: Array, required: true },
   allClasses: { type: Array, required: true },
-  highestQualification: { type: Object, required: true },
+  highestQualification: { type: Object, required: false },
 
   locations: [
     {
@@ -78,6 +79,7 @@ const UserSchema = new mongoose.Schema({
 
   userType: { type: String, required: false },
   userStatus: { type: String, required: false },
+  profileStatus: { type: String, default: "incomplete" },
   tag: { type: String, required: false },
 });
 
