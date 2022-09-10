@@ -39,11 +39,9 @@ async function signin(req, res) {
       if (!auth) {
         res.status(404).json({ error: "Password is incorrect" });
       } else {
-        const token = jwt.sign(
-          { id: preUser._id },
-          process.env.JWT_SECRET
-          // { expiresIn: "1h" }
-        );
+        const token = jwt.sign({ id: preUser._id }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
         // console.log(token);
         const prodOptions = {
           sameSite: "none",
