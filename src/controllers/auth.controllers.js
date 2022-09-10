@@ -46,8 +46,8 @@ async function signin(req, res) {
         );
         // console.log(token);
         console.log({ userId: preUser._id, token });
-        res.cookie("token", token);
-        res.cookie("user_id", preUser._id.toString());
+        res.cookie("token", token, { sameSite: "None" });
+        res.cookie("user_id", preUser._id.toString(), { sameSite: "None" });
         res.status(200).json(preUser);
         /* res.status(200).json({
           userId: preUser._id,
