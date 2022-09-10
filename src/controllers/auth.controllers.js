@@ -48,7 +48,7 @@ async function signin(req, res) {
         const prodOptions = {
           sameSite: "none",
           secure: true,
-          domain: "https://lions-webapp.vercel.app/",
+          domain: "lion-tutors-api.herokuapp.com",
         };
         // const prodOptions = {};
         console.log({ userId: preUser._id, token });
