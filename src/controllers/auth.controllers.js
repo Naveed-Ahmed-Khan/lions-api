@@ -45,12 +45,14 @@ async function signin(req, res) {
           // { expiresIn: "1h" }
         );
         // console.log(token);
-        console.log({ userId: preUser._id, token });
-        res.cookie("token", token, { sameSite: "none", secure: true });
-        res.cookie("user_id", preUser._id.toString(), {
+        const prodOptions = {
           sameSite: "none",
           secure: true,
-        });
+          domain: process.env.BACKEND,
+        };
+        console.log({ userId: preUser._id, token });
+        res.cookie("token", token, prodOptions);
+        res.cookie("user_id", preUser._id.toString(), prodOptions);
         res.status(200).json(preUser);
         /* res.status(200).json({
           userId: preUser._id,
