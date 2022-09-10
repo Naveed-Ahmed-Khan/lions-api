@@ -49,7 +49,7 @@ async function signin(req, res) {
           sameSite: "none",
           secure: true,
           domain: "lions-webapp.vercel.app",
-          path: "/login",
+          path: "/",
         };
         // const prodOptions = {};
         console.log({ userId: preUser._id, token });
