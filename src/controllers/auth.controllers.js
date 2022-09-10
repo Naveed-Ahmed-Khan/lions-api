@@ -45,12 +45,12 @@ async function signin(req, res) {
           // { expiresIn: "1h" }
         );
         // console.log(token);
-        /* const prodOptions = {
+        const prodOptions = {
           sameSite: "none",
           secure: true,
-          domain: "https://lion-tutors-api.herokuapp.com",
-        }; */
-        const prodOptions = {};
+          domain: "https://lions-webapp.vercel.app/",
+        };
+        // const prodOptions = {};
         console.log({ userId: preUser._id, token });
         res.cookie("token", token, prodOptions);
         res.cookie("user_id", preUser._id.toString(), prodOptions);
