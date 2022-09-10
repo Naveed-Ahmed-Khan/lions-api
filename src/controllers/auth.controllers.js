@@ -48,6 +48,7 @@ async function signin(req, res) {
           secure: true,
           domain: "lion-tutors-api.herokuapp.com",
           path: "/",
+          maxAge: 99999999999999,
         };
         // const prodOptions = {};
         console.log({ userId: preUser._id, token });
