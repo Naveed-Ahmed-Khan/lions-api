@@ -46,10 +46,10 @@ async function signin(req, res) {
         const prodOptions = {
           sameSite: "none",
           secure: true,
-          /*domain: "lions-api.vercel.app",
-          path: "/",
-          maxAge: 9999999,
+          /*path: "/",
           httpOnly: true,*/
+          domain: ".vercel.app",
+          maxAge: 9999999,
         };
         // const prodOptions = {};
         console.log({ userId: preUser._id, token, prodOptions });
