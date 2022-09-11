@@ -19,7 +19,9 @@ const port = process.env.PORT || 5000;
 const corsOptions = {
   origin: true,
   credentials: true,
+  exposedHeaders: ["set-cookie"],
 };
+
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
