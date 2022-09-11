@@ -45,7 +45,7 @@ async function signin(req, res) {
         // console.log(token);
         const prodOptions = {
           sameSite: "none",
-          // secure: true,
+          secure: true,
           /*path: "/",
           httpOnly: true,*/
           // domain: ".lions-api.vercel.app",
