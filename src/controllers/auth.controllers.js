@@ -44,7 +44,7 @@ async function signin(req, res) {
         });
         // console.log(token);
         const prodOptions = {
-          sameSite: "none",
+          // sameSite: "none",
           secure: true,
           domain: "*.vercel.app",
           path: "/",
