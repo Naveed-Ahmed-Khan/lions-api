@@ -20,9 +20,9 @@ const corsOptions = {
   origin: true,
   credentials: true,
 };
-
-app.use(cookieParser());
+app.set("trust proxy", 1);
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 
 app.use(applicationRouter);
