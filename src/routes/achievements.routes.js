@@ -1,4 +1,5 @@
 const express = require("express");
+const { protect } = require("../middleware/auth.middleware");
 
 const {
   getAchievements,
@@ -10,10 +11,10 @@ const {
 
 const router = express.Router();
 
-router.post("/add-achievement", addAchievement);
+router.post("/add-achievement", protect, addAchievement);
 router.get("/get-achievements", getAchievements);
 router.get("/get-achievement/:id", getSingleAchievement);
-router.patch("/update-achievement/:id", updateAchievement);
-router.delete("/delete-achievement/:id", deleteAchievement);
+router.patch("/update-achievement/:id", protect, updateAchievement);
+router.delete("/delete-achievement/:id", protect, deleteAchievement);
 
 module.exports = router;

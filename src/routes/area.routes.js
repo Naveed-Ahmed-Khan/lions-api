@@ -1,4 +1,5 @@
 const express = require("express");
+const { protect } = require("../middleware/auth.middleware");
 
 const {
   getAreas,
@@ -10,10 +11,10 @@ const {
 
 const router = express.Router();
 
-router.post("/add-area", addArea);
+router.post("/add-area", protect, addArea);
 router.get("/get-areas", getAreas);
 router.get("/get-area/:id", getSingleArea);
-router.patch("/update-area/:id", updateArea);
-router.delete("/delete-area/:id", deleteArea);
+router.patch("/update-area/:id", protect, updateArea);
+router.delete("/delete-area/:id", protect, deleteArea);
 
 module.exports = router;
