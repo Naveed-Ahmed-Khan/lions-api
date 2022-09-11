@@ -44,11 +44,11 @@ async function signin(req, res) {
         });
         // console.log(token);
         const prodOptions = {
-          sameSite: "none",
+          // sameSite: "none",
           secure: true,
           /*path: "/",
           httpOnly: true,*/
-          domain: ".lions-api.vercel.app",
+          // domain: ".lions-api.vercel.app",
           maxAge: 9999999,
         };
         // const prodOptions = {};
