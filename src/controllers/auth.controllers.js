@@ -46,7 +46,7 @@ async function signin(req, res) {
         const prodOptions = {
           sameSite: "none",
           secure: true,
-
+          domain: "lions-api.vercel.app",
           path: "/",
           maxAge: 99999999999999,
           httpOnly: false,
