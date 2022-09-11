@@ -48,7 +48,7 @@ async function signin(req, res) {
           secure: true,
           /*path: "/",
           httpOnly: true,*/
-          domain: ".vercel.app",
+          // domain: ".vercel.app",
           maxAge: 9999999,
         };
         // const prodOptions = {};
