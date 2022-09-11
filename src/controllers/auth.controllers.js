@@ -44,17 +44,17 @@ async function signin(req, res) {
         });
         // console.log(token);
         const prodOptions = {
-          sameSite: "none",
+          /* sameSite: "none",
           secure: true,
           domain: "lions-api.vercel.app",
           path: "/",
-          maxAge: 99999999999999,
-          httpOnly: false,
+          maxAge: 99999999999999, 
+          httpOnly: true,*/
         };
         // const prodOptions = {};
         console.log({ userId: preUser._id, token });
-        res.cookie("token", token, prodOptions);
-        res.cookie("user_id", preUser._id.toString(), prodOptions);
+        res.cookie("token", token);
+        res.cookie("user_id", preUser._id.toString());
 
         res.status(200).json(preUser);
         /* res.status(200).json({

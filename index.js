@@ -20,14 +20,13 @@ const corsOptions = {
   origin: true,
   credentials: true,
 };
-app.set("trust proxy", 1);
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 
+app.use(authRouter);
 app.use(applicationRouter);
 app.use(achievementRouter);
-app.use(authRouter);
 app.use(userRouter);
 app.use(jobRouter);
 app.use(cityRouter);
