@@ -2,8 +2,8 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const City = require("./models/city.model.js");
 const Area = require("./models/area.model");
-const cities = require("../cities.json");
-const areas = require("../areas.json");
+const cities = require("./cities.json");
+const areas = require("./areas.json");
 
 const capitalize = (mySentence) => {
   const words = mySentence.split(" ");
