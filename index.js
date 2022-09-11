@@ -19,6 +19,7 @@ const port = process.env.PORT || 5000;
 const corsOptions = {
   origin: true,
   credentials: true,
+  allowedHeaders: ["content-type", "Authorization", "set-cookie"],
   exposedHeaders: ["set-cookie"],
 };
 
