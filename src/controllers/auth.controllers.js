@@ -47,9 +47,9 @@ async function signin(req, res) {
           sameSite: "none",
           secure: true,
           /*domain: "lions-api.vercel.app",
-          path: "/",*/
+          path: "/",
           maxAge: 9999999,
-          httpOnly: true,
+          httpOnly: true,*/
         };
         // const prodOptions = {};
         console.log({ userId: preUser._id, token, prodOptions });
