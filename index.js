@@ -2,15 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const authRouter = require("./routes/auth.routes");
-const userRouter = require("./routes/users.routes");
-const jobRouter = require("./routes/jobs.routes");
-const cityRouter = require("./routes/city.routes");
-const subjectRouter = require("./routes/subjects.routes");
-const classRouter = require("./routes/classes.routes");
-const areaRouter = require("./routes/area.routes");
-const achievementRouter = require("./routes/achievements.routes");
-const applicationRouter = require("./routes/applications.routes");
+const authRouter = require("./src/routes/auth.routes");
+const userRouter = require("./src/routes/users.routes");
+const jobRouter = require("./src/routes/jobs.routes");
+const cityRouter = require("./src/routes/city.routes");
+const subjectRouter = require("./src/routes/subjects.routes");
+const classRouter = require("./src/routes/classes.routes");
+const areaRouter = require("./src/routes/area.routes");
+const achievementRouter = require("./src/routes/achievements.routes");
+const applicationRouter = require("./src/routes/applications.routes");
 require("./dbconnect");
 
 const app = express();

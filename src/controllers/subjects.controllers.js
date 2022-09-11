@@ -1,5 +1,5 @@
 const Subject = require("../models/subject.model");
-const capitalize = require("../src/util/capitalize");
+const capitalize = require("../util/capitalize");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addSubject(req, res) {

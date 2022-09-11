@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const City = require("./models/city.model.js");
-const Area = require("./models/area.model");
+const City = require("./src/models/city.model.js");
+const Area = require("./src/models/area.model");
 const cities = require("./cities.json");
 const areas = require("./areas.json");
 

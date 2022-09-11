@@ -1,5 +1,5 @@
 const Class = require("../models/class.model");
-const capitalize = require("../util/capitalize");
+const capitalize = require("../src/util/capitalize");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addClass(req, res) {

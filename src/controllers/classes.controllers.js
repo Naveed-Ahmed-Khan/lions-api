@@ -1,22 +1,22 @@
-const Subject = require("../models/subject.model");
-const capitalize = require("../src/util/capitalize");
+const Class = require("../models/class.model");
+const capitalize = require("../util/capitalize");
 
 //////////////////////////////////////////////////////////////////////////////
-async function addSubject(req, res) {
+async function addClass(req, res) {
   const name = capitalize(req.body.name);
   try {
-    const data = await Subject.create({ name: name });
-    console.log(data);
+    const data = await Class.create({ name: name });
     res.status(201).json(data);
+    // console.log(data);
   } catch (error) {
     res.status(404).json({ error });
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getSubjects(req, res) {
+async function getClasses(req, res) {
   try {
-    const data = await Subject.find();
+    const data = await Class.find();
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -25,10 +25,10 @@ async function getSubjects(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getSingleSubject(req, res) {
-  const subjectId = req.params.id;
+async function getSingleClass(req, res) {
+  const classId = req.params.id;
   try {
-    const data = await Subject.findById(subjectId);
+    const data = await Class.findById(classId);
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -37,11 +37,11 @@ async function getSingleSubject(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function updateSubject(req, res) {
-  const subjectId = req.params.id;
+async function updateClass(req, res) {
+  const classId = req.params.id;
   const name = capitalize(req.body.name);
   try {
-    const data = await Subject.findByIdAndUpdate(subjectId, {
+    const data = await Class.findByIdAndUpdate(classId, {
       name: name,
     });
     res.status(200).json(data);
@@ -52,11 +52,11 @@ async function updateSubject(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function deleteSubject(req, res) {
-  const subjectId = req.params.id;
+async function deleteClass(req, res) {
+  const classId = req.params.id;
   try {
-    await Subject.findByIdAndDelete(subjectId);
-    res.status(200).json({ msg: "Subject Deleted" });
+    await Class.findByIdAndDelete(classId);
+    res.status(200).json({ msg: "Class Deleted" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: err.message });
@@ -64,9 +64,9 @@ async function deleteSubject(req, res) {
 }
 
 module.exports = {
-  addSubject,
-  getSubjects,
-  getSingleSubject,
-  updateSubject,
-  deleteSubject,
+  addClass,
+  getClasses,
+  getSingleClass,
+  updateClass,
+  deleteClass,
 };
