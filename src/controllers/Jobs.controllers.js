@@ -1,5 +1,4 @@
 const Job = require("../models/job.model");
-const Application = require("../models/application.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addJob(req, res) {
@@ -34,7 +33,10 @@ async function getJobs(req, res) {
   }
 
   try {
-    const jobs = await Job.find(filter).populate("user_id").exec();
+    const jobs = await Job.find(filter)
+      .populate("user_id")
+      .populate("admin_id")
+      .exec();
     res.status(200).json(jobs);
     // console.log(jobs);
   } catch (error) {
@@ -46,7 +48,7 @@ async function getJobs(req, res) {
 async function getMyJobs(req, res) {
   try {
     const myJobs = await Job.find({ user_id: req.params.id })
-      .populate("user_id")
+      .populate({ path: "user_id" })
       .exec();
     res.status(200).json(myJobs);
     // console.log(myJobs);
@@ -59,7 +61,10 @@ async function getMyJobs(req, res) {
 async function getSingleJob(req, res) {
   const JobId = req.params.id;
   try {
-    const JobData = await Job.findById(JobId).populate("user_id").exec();
+    const JobData = await Job.findById(JobId)
+      .populate("user_id")
+      .populate("admin_id")
+      .exec();
     res.status(200).json(JobData);
     // console.log(JobData);
   } catch (error) {
@@ -67,6 +72,24 @@ async function getSingleJob(req, res) {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
+async function changeJobStatus(req, res) {
+  const JobId = req.params.id;
+  try {
+    const job = await Job.findById(JobId);
+
+    await Job.findByIdAndUpdate(JobId, {
+      isOpen: job.isOpen ? false : true,
+    });
+    res.status(200).json({
+      msg: job.isOpen ? "Job Not Open" : "Job Open",
+    });
+
+    // console.log(JobData);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+}
 //////////////////////////////////////////////////////////////////////////////
 async function updateApplicants(req, res) {
   const JobId = req.params.id;
@@ -100,6 +123,7 @@ module.exports = {
   getJobs,
   getMyJobs,
   getSingleJob,
+  changeJobStatus,
   addJob,
   deleteJob,
 };

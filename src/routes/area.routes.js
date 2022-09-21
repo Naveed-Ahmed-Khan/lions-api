@@ -11,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.post("/add-area", protect, addArea);
+router.post("/add-area", addArea);
 router.get("/get-areas", getAreas);
 router.get("/get-area/:id", getSingleArea);
 router.patch("/update-area/:id", protect, updateArea);

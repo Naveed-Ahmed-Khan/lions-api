@@ -1,4 +1,5 @@
 const Application = require("../models/application.model");
+const Job = require("../models/job.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addApplication(req, res) {
@@ -78,6 +79,75 @@ async function getSingleApplication(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function selectAppliction(req, res) {
+  const ApplicationId = req.params.id;
+  try {
+    const application = await Application.findById(ApplicationId);
+    console.log(application);
+    await Application.findByIdAndUpdate(ApplicationId, {
+      isSelected: application.isSelected ? false : true,
+    });
+
+    if (application.isSelected) {
+      await Job.findByIdAndUpdate(application.job_id, {
+        isOpen: false,
+      });
+    } else {
+      await Job.findByIdAndUpdate(application.job_id, {
+        isOpen: true,
+      });
+    }
+
+    res.status(200).json({
+      msg: application.isSelected
+        ? "Application Not Selected"
+        : "Application Selected",
+    });
+    // console.log(updatedApplication);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+}
+//////////////////////////////////////////////////////////////////////////////
+async function shortlistAppliction(req, res) {
+  const ApplicationId = req.params.id;
+  try {
+    const application = await Application.findById(ApplicationId);
+
+    await Application.findByIdAndUpdate(ApplicationId, {
+      isShortlisted: application.isShortlisted ? false : true,
+    });
+    res.status(200).json({
+      msg: application.isShortlisted
+        ? "Application Not Shortlisted"
+        : "Application Shortlisted",
+    });
+    // console.log(updatedApplication);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+}
+//////////////////////////////////////////////////////////////////////////////
+async function rejectAppliction(req, res) {
+  const ApplicationId = req.params.id;
+  try {
+    const application = await Application.findById(ApplicationId);
+
+    await Application.findByIdAndUpdate(ApplicationId, {
+      isRejected: application.isRejected ? false : true,
+    });
+    res.status(200).json({
+      msg: application.isRejected
+        ? "Application Not Rejected"
+        : "Application Rejected",
+    });
+    // console.log(updatedApplication);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function updateApplicant(req, res) {
   const ApplicationId = req.params.id;
   try {
@@ -110,6 +180,9 @@ module.exports = {
   getJobApplications,
   getMyApplications,
   getSingleApplication,
+  selectAppliction,
+  shortlistAppliction,
+  rejectAppliction,
   updateApplicant,
   deleteApplication,
 };

@@ -1,38 +1,13 @@
 const User = require("../models/user.model");
-
-//////////////////////////////////////////////////////////////////////////////
-async function addUser(req, res) {
-  const { firstName, lastName, email, contact, address, profilePic, password } =
-    req.body;
-  try {
-    const preUser = await User.findOne({ email: email });
-    console.log(preUser);
-    if (preUser) {
-      res.status(404).send("This user already exists");
-    } else {
-      const addUser = new User({
-        firstName,
-        lastName,
-        email,
-        password,
-        contact,
-        address,
-        profilePic,
-      });
-      await addUser.save();
-      res.status(201).json(addUser);
-      // console.log(addUser);
-    }
-  } catch (error) {
-    res.status(404).send(error.message);
-  }
-}
+const Student = require("../models/student.model");
+const Tutor = require("../models/tutor.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function getTutors(req, res) {
   const { query } = req;
 
-  let filter = { userType: "tutor" };
+  let filter = {};
+
   if (query.qualification) {
     filter["qualifications.degree"] = query.qualification;
   }
@@ -49,47 +24,71 @@ async function getTutors(req, res) {
     filter["locations.places"] = query.area;
   }
 
-  // console.log(filter);
+  console.log(filter);
   try {
-    const tutors = await User.find(filter);
-    res.status(200).json(tutors);
+    const tutors = await Tutor.find(filter);
     // console.log(tutors);
+    /* const users = await User.find({ tutor: { $ne: null } })
+      .populate("tutor")
+      .exec(); */
+
+    res.status(200).json(tutors);
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ error });
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 async function getStudents(req, res) {
   try {
-    const students = await User.find({ userType: "student" });
-    res.status(200).json(students);
+    const students = await Student.find();
+
     // console.log(students);
+    res.status(200).json(students);
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ error });
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 async function getUsers(req, res) {
   try {
-    const usersData = await User.find();
+    const usersData = await User.find()
+      .populate("student")
+      .populate("tutor")
+      .populate("admin")
+      .exec();
     res.status(200).json(usersData);
     // console.log(usersData);
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ error });
   }
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getSingleUser(req, res) {
+async function getSingleTutor(req, res) {
   const userId = req.params.id;
   try {
-    const userData = await User.findById(userId);
+    const userData = await Tutor.findById(userId);
     res.status(200).json(userData);
     // console.log(userData);
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ error });
+  }
+}
+//////////////////////////////////////////////////////////////////////////////
+async function getSingleUser(req, res) {
+  const userId = req.params.id;
+  try {
+    const userData = await User.findById(userId)
+      .populate("student")
+      .populate("tutor")
+      .populate("admin")
+      .exec();
+    res.status(200).json(userData);
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
   }
 }
 
@@ -101,20 +100,70 @@ async function getSingleUser(req, res) {
     res.status(200).json(userData);
     // console.log(userData);
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ error });
   }
 } */
+
+//////////////////////////////////////////////////////////////////////////////
+async function verifyTutor(req, res) {
+  const userId = req.params.id;
+
+  try {
+    // const user = await User.findById(userId);
+    const tutor = await Tutor.findById(userId);
+    // console.log(tutor);
+
+    await Tutor.findByIdAndUpdate(userId, {
+      // Check if user is blacklisted, set isBlacklisted to false and vice versa
+      isVerified: tutor.isVerified ? false : true,
+    });
+
+    res.status(200).json({
+      msg: tutor.isVerified
+        ? "User removed from verified list"
+        : "User added to verified list",
+    });
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function blacklistTutor(req, res) {
+  const userId = req.params.id;
+
+  try {
+    // const user = await User.findById(userId);
+    const tutor = await Tutor.findById(userId);
+
+    await Tutor.findByIdAndUpdate(userId, {
+      // Check if user is blacklisted, set isBlacklisted to false and vice versa
+      isBlacklisted: tutor.isBlacklisted ? false : true,
+    });
+
+    res.status(200).json({
+      msg: tutor?.isBlacklisted
+        ? "User removed from blacklist"
+        : "User added to blacklist",
+    });
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 async function updateTutorProfile(req, res) {
   const userId = req.params.id;
   try {
-    const userData = await User.findByIdAndUpdate(userId, { ...req.body });
+    // const user = await User.findById(userId);
+    await Tutor.findByIdAndUpdate(userId, { ...req.body });
 
-    res.status(200).json(userData);
+    res.status(200).json({ msg: "Tutor profile updated " });
     // console.log(userData);
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ error });
   }
 }
 
@@ -122,11 +171,23 @@ async function updateTutorProfile(req, res) {
 async function deleteUser(req, res) {
   const userId = req.params.id;
   try {
+    const user = await User.findById(userId);
+
+    if (user.tutor) {
+      await Tutor.findByIdAndDelete(user.tutor);
+    }
+    if (user.student) {
+      await Student.findByIdAndDelete(user.student);
+    }
+    /* if (user.institute) {
+      await Institute.findByIdAndDelete(user.institute);
+    } */
     await User.findByIdAndDelete(userId);
+
     res.status(200).json({ msg: "User Deleted" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ msg: err.message });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: error });
   }
 }
 
@@ -135,7 +196,9 @@ module.exports = {
   getTutors,
   getStudents,
   getSingleUser,
-  addUser,
+  getSingleTutor,
   deleteUser,
   updateTutorProfile,
+  blacklistTutor,
+  verifyTutor,
 };

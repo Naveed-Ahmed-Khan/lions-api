@@ -2,21 +2,60 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+const Student = require("../models/student.model");
+const Tutor = require("../models/tutor.model");
+const Admin = require("../models/admin.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function signup(req, res) {
+  const { email, password, tutor, student, institute, admin } = req.body;
+  console.log(email);
+  console.log(student);
   try {
-    const preUser = await User.findOne({ email: req.body.email });
-    console.log(preUser);
+    const preUser = await User.findOne({ email: email });
+    // console.log(preUser);
     if (preUser) {
       res.status(404).json({ error: "This user already exists" });
     } else {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      let userType = "";
+      let userId = "";
 
-      const user = await User.create({
-        ...req.body,
+      if (tutor) {
+        const data = await Tutor.create({
+          ...tutor,
+        });
+        userType = "tutor";
+        userId = data._id;
+      }
+      if (student) {
+        const data = await Student.create({
+          ...student,
+        });
+        userType = "student";
+        userId = data._id;
+      }
+      /* if (admin) {
+        const data = await Admin.create({
+          ...admin,
+        });
+        userType = "admin";
+        userId = data._id;
+      }*/
+      /* if (institute) {
+        const data = await Institute.create({
+          ...institute,
+        });
+        userType = "institute";
+        userId = data._id;
+      }  */
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const userData = {
+        email: email,
         password: hashedPassword,
-      });
+        [userType]: userId,
+      };
+      const user = await User.create({ ...userData });
       console.log(user);
       res.status(201).json(user);
     }
@@ -28,44 +67,63 @@ async function signup(req, res) {
 //////////////////////////////////////////////////////////////////////////////
 async function signin(req, res) {
   console.log(req);
+  const { email, password } = req.body;
+
   try {
-    const preUser = await User.findOne({ email: req.body.email });
+    const preUser = await User.findOne({ email: email });
+
     if (!preUser) {
       res.status(404).json({ error: "This user doesnot exist" });
     } else {
       // console.log(preUser);
-      const auth = await bcrypt.compare(req.body.password, preUser.password);
+      const auth = await bcrypt.compare(password, preUser.password);
       // console.log(auth);
       if (!auth) {
         res.status(404).json({ error: "Password is incorrect" });
       } else {
-        const token = jwt.sign({ id: preUser._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign(
+          { id: preUser._id },
+          process.env.JWT_SECRET /* {
           expiresIn: "1h",
-        });
-        // console.log(token);
-        const prodOptions = {
-          /* sameSite: "none",
-          secure: true, */
-          /*path: "/",*/
-          httpOnly: false,
-          // domain: ".lions-api.vercel.app",
-          maxAge: 9999999,
-        };
-        // const prodOptions = {};
-        console.log({ userId: preUser._id, token, prodOptions });
-        /* res.cookie("token", token, prodOptions);
-        res.cookie("user_id", preUser._id.toString(), prodOptions); */
-
-        res.status(200).json({ preUser, token });
-        /* res.status(200).json({
-          userId: preUser._id,
+        } */
+        );
+        res.status(200).json({
+          user_id: preUser._id,
           userType: preUser.userType,
-          profilePic: preUser.profilePic,
-          name: preUser.name,
-          qualification: preUser.qualification,
-          profileStatus: preUser.profileStatus,
+          token,
+        });
+        /* res.status(200).json({
+          user_id:
+            preUser.tutor ||
+            preUser.student ||
+            preUser.institute ||
+            preUser.admin,
+          userType: preUser.userType,
           token,
         }); */
+        /* {
+        // console.log(token);
+        // const prodOptions = {
+        //   sameSite: "none",
+        //   secure: true,
+        //   path: "/",
+        //   httpOnly: false,
+        //   domain: ".lions-api.vercel.app",
+        //   maxAge: 9999999,
+        // };
+        // const prodOptions = {};
+        // console.log({ userId: preUser._id, token, prodOptions });
+        // console.log({
+        //   user_id:
+        //     preUser.tutor ||
+        //     preUser.student ||
+        //     preUser.institute ||
+        //     preUser.admin,
+        //   token,
+        // });
+        // res.cookie("token", token, prodOptions);
+        // res.cookie("user_id", preUser._id.toString(), prodOptions);
+        } */
       }
     }
   } catch (error) {

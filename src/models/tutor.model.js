@@ -1,41 +1,37 @@
 const mongoose = require("mongoose");
 
 const Id = mongoose.Schema.Types.ObjectId;
-const UserSchema = new mongoose.Schema({
+const TutorSchema = new mongoose.Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
+  account_id: { type: Id, ref: "Account", default: null },
 
-  tutor: { type: Id, ref: "Tutor", default: null },
-  student: { type: Id, ref: "Student", default: null },
-  admin: { type: Id, ref: "Admin", default: null },
-  institute: { type: Id, ref: "Institute", default: null },
-
-  name: { type: String, required: false },
+  name: { type: String, required: true },
   cnic: { type: Number, required: false },
   birth: { type: String, required: false },
   gender: { type: String, required: false },
 
   mobile: { type: Number, required: false },
   watsapp: { type: Number, required: false },
-  city: { type: String, required: false },
+  city: { type: String, required: true },
   area: { type: String, required: false },
-  address: { type: String, required: false },
+  address: { type: String, required: true },
   profilePic: { type: String, required: false },
   bannerImage: { type: String, required: false },
   teachingMode: { type: String, required: false },
-  teachingModes: { type: Array, required: false },
+  teachingModes: { type: Array, required: true },
   aboutMe: { type: String, required: false },
   achievements: { type: String, required: false },
 
   availableFrom: { type: String, required: false },
   availableTo: { type: String, required: false },
 
-  allLocations: { type: Array, required: false },
-  allSubjects: { type: Array, required: false },
-  allClasses: { type: Array, required: false },
+  allLocations: { type: Array, required: true },
+  allSubjects: { type: Array, required: true },
+  allClasses: { type: Array, required: true },
   highestQualification: { type: Object, required: false },
 
-  userType: { type: String, required: true },
+  // userType: { type: String, required: false },
   userStatus: { type: String, required: false },
   profileStatus: { type: String, default: "incomplete" },
   tag: { type: String, required: false },
@@ -71,9 +67,9 @@ const UserSchema = new mongoose.Schema({
 
   experience: [
     {
-      institute: { type: String, required: false },
-      years: { type: Number, required: false },
-      months: { type: Number, required: false },
+      institute: { type: String, required: true },
+      years: { type: Number, required: true },
+      months: { type: Number, required: true },
     },
   ],
 
@@ -91,6 +87,6 @@ const UserSchema = new mongoose.Schema({
   ],
 });
 
-const User = new mongoose.model("User", UserSchema);
+const Tutor = new mongoose.model("Tutor", TutorSchema);
 
-module.exports = User;
+module.exports = Tutor;

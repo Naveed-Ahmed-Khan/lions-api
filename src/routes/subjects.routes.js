@@ -11,10 +11,10 @@ const {
 
 const router = express.Router();
 
-router.post("/add-subject", protect, addSubject);
+router.post("/add-subject", addSubject);
 router.get("/get-subjects", getSubjects);
 router.get("/get-subject/:id", getSingleSubject);
-router.patch("/update-subject/:id", protect, updateSubject);
-router.delete("/delete-subject/:id", protect, deleteSubject);
+router.patch("/update-subject/:id", updateSubject);
+router.delete("/delete-subject/:id", deleteSubject);
 
 module.exports = router;

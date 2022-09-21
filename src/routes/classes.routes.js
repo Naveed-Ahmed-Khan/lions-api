@@ -11,7 +11,7 @@ const {
 
 const router = express.Router();
 
-router.post("/add-class", protect, addClass);
+router.post("/add-class", addClass);
 router.get("/get-classes", getClasses);
 router.get("/get-class/:id", getSingleClass);
 router.patch("/update-class/:id", protect, updateClass);

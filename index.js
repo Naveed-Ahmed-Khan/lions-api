@@ -19,9 +19,9 @@ const port = process.env.PORT || 5000;
 const corsOptions = {
   origin: true,
   credentials: true,
-  allowedHeaders:
-    "Origin, Content-Type, X-Auth-Token, Set-Cookie, Authorisation, Accept",
-  exposedHeaders: "Set-Cookie",
+  // allowedHeaders:
+  //   "Origin, Content-Type, X-Auth-Token, Set-Cookie, Authorization, Accept",
+  // exposedHeaders: "Set-Cookie",
 };
 
 app.use(cors(corsOptions));
