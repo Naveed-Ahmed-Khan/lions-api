@@ -18,7 +18,7 @@ const {
 
 const router = express.Router();
 
-router.get("/get-tutors", getTutors);
+router.get("/get-alltutors", getTutors);
 router.get("/get-complete-tutors", getCompleteTutors);
 router.get("/get-students", getStudents);
 router.get("/get-users", getUsers);
