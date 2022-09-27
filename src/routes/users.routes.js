@@ -4,22 +4,21 @@ const { protect } = require("../middleware/auth.middleware");
 const {
   getUsers,
   getSingleUser,
-  /* getUserByName, */
   deleteUser,
-  getTutors,
   getStudents,
   updateTutorProfile,
   blacklistTutor,
   verifyTutor,
   getSingleTutor,
   featureTutor,
-  getCompleteTutors,
+  // getCompleteTutors,
+  getAllTutors,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
 
-router.get("/get-alltutors", getTutors);
-router.get("/get-complete-tutors", getCompleteTutors);
+router.get("/get-tutors", getAllTutors);
+// router.get("/get-complete-tutors", getCompleteTutors);
 router.get("/get-students", getStudents);
 router.get("/get-users", getUsers);
 router.get("/get-user/:id", getSingleUser);

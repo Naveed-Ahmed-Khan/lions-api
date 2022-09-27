@@ -2,7 +2,7 @@ const User = require("../models/user.model");
 const Student = require("../models/student.model");
 const Tutor = require("../models/tutor.model");
 
-//////////////////////////////////////////////////////////////////////////////
+/* //////////////////////////////////////////////////////////////////////////////
 async function getCompleteTutors(req, res) {
   const { query } = req;
 
@@ -32,11 +32,11 @@ async function getCompleteTutors(req, res) {
   } catch (error) {
     res.status(404).send({ error });
   }
-}
+} */
 
-async function getTutors(req, res) {
+async function getAllTutors(req, res) {
   try {
-    const tutors = await Tutor.find({});
+    const tutors = await Tutor.find();
     res.status(200).json(tutors);
   } catch (error) {
     res.status(404).send({ error });
@@ -219,8 +219,8 @@ async function deleteUser(req, res) {
 
 module.exports = {
   getUsers,
-  getCompleteTutors,
-  getTutors,
+  // getCompleteTutors,
+  getAllTutors,
   getStudents,
   getSingleUser,
   getSingleTutor,
