@@ -25,22 +25,18 @@ async function getCompleteTutors(req, res) {
     filter["locations.places"] = query.area;
   }
 
-  console.log(filter);
+  // console.log(filter);
   try {
     const tutors = await Tutor.find(filter);
-    // console.log(tutors);
-    /* const users = await User.find({ tutor: { $ne: null } })
-      .populate("tutor")
-      .exec(); */
-
     res.status(200).json(tutors);
   } catch (error) {
     res.status(404).send({ error });
   }
 }
+
 async function getTutors(req, res) {
   try {
-    const tutors = await Tutor.find();
+    const tutors = await Tutor.find({});
     res.status(200).json(tutors);
   } catch (error) {
     res.status(404).send({ error });
@@ -51,8 +47,6 @@ async function getTutors(req, res) {
 async function getStudents(req, res) {
   try {
     const students = await Student.find();
-
-    // console.log(students);
     res.status(200).json(students);
   } catch (error) {
     res.status(404).send({ error });
