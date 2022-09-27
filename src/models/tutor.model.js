@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Id = mongoose.Schema.Types.ObjectId;
 const TutorSchema = new mongoose.Schema({
   email: { type: String, required: true },
-  password: { type: String, required: true },
+  password: { type: String, required: false },
   account_id: { type: Id, ref: "Account", default: null },
 
   name: { type: String, required: true },
@@ -11,32 +11,33 @@ const TutorSchema = new mongoose.Schema({
   birth: { type: String, required: false },
   gender: { type: String, required: false },
 
-  mobile: { type: Number, required: false },
-  watsapp: { type: Number, required: false },
-  city: { type: String, required: true },
-  area: { type: String, required: false },
-  address: { type: String, required: true },
   profilePic: { type: String, required: false },
   bannerImage: { type: String, required: false },
-  teachingMode: { type: String, required: false },
+
+  mobile: { type: Number, required: false },
+  watsapp: { type: Number, required: false },
+  city: { type: String, required: false },
+  area: { type: String, required: false },
+  address: { type: String, required: true },
   teachingModes: { type: Array, required: true },
-  aboutMe: { type: String, required: false },
-  achievements: { type: String, required: false },
 
-  availableFrom: { type: String, required: false },
-  availableTo: { type: String, required: false },
-
-  allLocations: { type: Array, required: true },
-  allSubjects: { type: Array, required: true },
-  allClasses: { type: Array, required: true },
-  highestQualification: { type: Object, required: false },
-
-  // userType: { type: String, required: false },
-  userStatus: { type: String, required: false },
+  tag: { type: String, default: "none" },
   profileStatus: { type: String, default: "incomplete" },
-  tag: { type: String, required: false },
   isBlacklisted: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
+  isFeatured: { type: Boolean, default: false },
+
+  shortlistedDemos: [{ type: Id, ref: "Job", required: false }],
+  selectedJobs: [{ type: Id, ref: "Job", required: false }],
+
+  notifications: [
+    {
+      title: { type: String, required: true },
+      msg: { type: String, required: true },
+      type: { type: String, required: true },
+      isRead: { type: Boolean, default: false },
+    },
+  ],
 
   locations: [
     {
@@ -59,9 +60,18 @@ const TutorSchema = new mongoose.Schema({
 
   qualifications: [
     {
-      degree: { type: String, required: false },
-      institute: { type: String, required: false },
-      passingYear: { type: Number, required: false },
+      degree: { type: String, required: true },
+      institute: { type: String, required: true },
+      passingYear: { type: Number, required: true },
+    },
+  ],
+
+  slots: [
+    {
+      title: { type: String, required: true },
+      from: { type: String, required: true },
+      to: { type: String, required: true },
+      isBooked: { type: Boolean, default: false },
     },
   ],
 

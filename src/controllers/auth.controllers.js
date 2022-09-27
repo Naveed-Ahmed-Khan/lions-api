@@ -4,13 +4,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const Student = require("../models/student.model");
 const Tutor = require("../models/tutor.model");
+const Notification = require("../models/notification.model");
 const Admin = require("../models/admin.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function signup(req, res) {
   const { email, password, tutor, student, institute, admin } = req.body;
   console.log(email);
-  console.log(student);
+  console.log(tutor);
   try {
     const preUser = await User.findOne({ email: email });
     // console.log(preUser);
@@ -24,9 +25,16 @@ async function signup(req, res) {
         const data = await Tutor.create({
           ...tutor,
         });
+        await Notification.create({
+          tutor_id: data._id,
+          type: "warning",
+          title: "Incomplete Profile",
+          msg: "Users cannot see an incomplete profile. Complete your profile in 'Edit Profile'",
+        });
         userType = "tutor";
         userId = data._id;
       }
+
       if (student) {
         const data = await Student.create({
           ...student,
@@ -34,6 +42,7 @@ async function signup(req, res) {
         userType = "student";
         userId = data._id;
       }
+
       /* if (admin) {
         const data = await Admin.create({
           ...admin,
@@ -54,9 +63,12 @@ async function signup(req, res) {
         email: email,
         password: hashedPassword,
         [userType]: userId,
+        userType,
       };
+
+      console.log(userData);
       const user = await User.create({ ...userData });
-      console.log(user);
+      // console.log(user);
       res.status(201).json(user);
     }
   } catch (error) {

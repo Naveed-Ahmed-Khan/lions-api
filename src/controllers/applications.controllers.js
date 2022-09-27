@@ -1,5 +1,7 @@
 const Application = require("../models/application.model");
 const Job = require("../models/job.model");
+const Tutor = require("../models/tutor.model");
+const Notification = require("../models/notification.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addApplication(req, res) {
@@ -82,8 +84,12 @@ async function getSingleApplication(req, res) {
 async function selectAppliction(req, res) {
   const ApplicationId = req.params.id;
   try {
-    const application = await Application.findById(ApplicationId);
-    console.log(application);
+    const application = await Application.findById(ApplicationId)
+      .populate("applicant_id")
+      .exec();
+    const tutor = application.applicant_id;
+    // console.log(application);
+
     await Application.findByIdAndUpdate(ApplicationId, {
       isSelected: application.isSelected ? false : true,
     });
@@ -98,6 +104,21 @@ async function selectAppliction(req, res) {
       });
     }
 
+    if (
+      !application.isSelected &&
+      !tutor.selectedJobs.includes(application.job_id)
+    ) {
+      // console.log("updating jobs");
+      try {
+        const data = await Tutor.findByIdAndUpdate(tutor._id, {
+          selectedJobs: [...tutor.selectedJobs, application.job_id],
+        });
+        // console.log(data.selectedJobs);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     res.status(200).json({
       msg: application.isSelected
         ? "Application Not Selected"
@@ -108,15 +129,37 @@ async function selectAppliction(req, res) {
     res.status(404).send(error);
   }
 }
+
 //////////////////////////////////////////////////////////////////////////////
 async function shortlistAppliction(req, res) {
   const ApplicationId = req.params.id;
+  console.log(ApplicationId);
   try {
-    const application = await Application.findById(ApplicationId);
+    const application = await Application.findById(ApplicationId)
+      .populate("applicant_id")
+      .exec();
+    const tutor = application.applicant_id;
+    // console.log(tutor);
 
     await Application.findByIdAndUpdate(ApplicationId, {
       isShortlisted: application.isShortlisted ? false : true,
     });
+
+    if (
+      !application.isShortlisted &&
+      !tutor.shortlistedDemos.includes(application.job_id)
+    ) {
+      // console.log("updating demos");
+      try {
+        const data = await Tutor.findByIdAndUpdate(tutor._id, {
+          shortlistedDemos: [...tutor.shortlistedDemos, application.job_id],
+        });
+        // console.log(data.shortlistedDemos);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     res.status(200).json({
       msg: application.isShortlisted
         ? "Application Not Shortlisted"
@@ -127,6 +170,7 @@ async function shortlistAppliction(req, res) {
     res.status(404).send(error);
   }
 }
+
 //////////////////////////////////////////////////////////////////////////////
 async function rejectAppliction(req, res) {
   const ApplicationId = req.params.id;

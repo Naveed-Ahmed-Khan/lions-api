@@ -33,10 +33,7 @@ async function getJobs(req, res) {
   }
 
   try {
-    const jobs = await Job.find(filter)
-      .populate("user_id")
-      .populate("admin_id")
-      .exec();
+    const jobs = await Job.find(filter).populate("user_id").exec();
     res.status(200).json(jobs);
     // console.log(jobs);
   } catch (error) {
@@ -61,10 +58,7 @@ async function getMyJobs(req, res) {
 async function getSingleJob(req, res) {
   const JobId = req.params.id;
   try {
-    const JobData = await Job.findById(JobId)
-      .populate("user_id")
-      .populate("admin_id")
-      .exec();
+    const JobData = await Job.findById(JobId).populate("user_id").exec();
     res.status(200).json(JobData);
     // console.log(JobData);
   } catch (error) {

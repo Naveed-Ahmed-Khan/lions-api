@@ -12,6 +12,7 @@ const {
   blacklistTutor,
   verifyTutor,
   getSingleTutor,
+  featureTutor,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
@@ -24,6 +25,7 @@ router.get("/get-tutor/:id", getSingleTutor);
 /* router.get("/get-userbyname/:id", getUserByName); */
 router.patch("/update-tutor/:id", protect, updateTutorProfile);
 router.get("/verify-tutor/:id", verifyTutor);
+router.get("/feature-tutor/:id", featureTutor);
 router.get("/blacklist-tutor/:id", blacklistTutor);
 router.delete("/delete-user/:id", protect, deleteUser);
 

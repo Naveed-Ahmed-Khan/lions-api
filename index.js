@@ -11,6 +11,7 @@ const classRouter = require("./src/routes/classes.routes");
 const areaRouter = require("./src/routes/area.routes");
 const achievementRouter = require("./src/routes/achievements.routes");
 const applicationRouter = require("./src/routes/applications.routes");
+const notificationRouter = require("./src/routes/notifications.routes");
 require("./dbconnect");
 
 const app = express();
@@ -31,10 +32,11 @@ app.use(express.json({ limit: "50mb" }));
 app.use(authRouter);
 app.use(applicationRouter);
 app.use(achievementRouter);
+app.use(notificationRouter);
 app.use(userRouter);
 app.use(jobRouter);
-app.use(cityRouter);
 app.use(areaRouter);
+app.use(cityRouter);
 app.use(subjectRouter);
 app.use(classRouter);
 

@@ -3,7 +3,7 @@ const City = require("../models/city.model");
 //////////////////////////////////////////////////////////////////////////////
 async function addCity(req, res) {
   try {
-    const data = City.create(req.body);
+    const data = await City.create(req.body);
     res.status(201).json(data);
     // console.log(data);
   } catch (error) {
@@ -12,11 +12,11 @@ async function addCity(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function getCities(req, res) {
+async function getAllCities(req, res) {
   try {
-    const data = await City.find();
+    const data = await City.find({}).exec();
+    console.log(data);
     res.status(200).json(data);
-    // console.log(data);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -62,7 +62,7 @@ async function deleteCity(req, res) {
 
 module.exports = {
   addCity,
-  getCities,
+  getAllCities,
   getSingleCity,
   updateCity,
   deleteCity,

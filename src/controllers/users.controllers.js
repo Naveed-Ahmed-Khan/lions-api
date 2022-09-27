@@ -6,7 +6,8 @@ const Tutor = require("../models/tutor.model");
 async function getTutors(req, res) {
   const { query } = req;
 
-  let filter = {};
+  // let filter = {};
+  let filter = { profileStatus: "complete" };
 
   if (query.qualification) {
     filter["qualifications.degree"] = query.qualification;
@@ -154,6 +155,28 @@ async function blacklistTutor(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function featureTutor(req, res) {
+  const userId = req.params.id;
+
+  try {
+    // const user = await User.findById(userId);
+    const tutor = await Tutor.findById(userId);
+
+    await Tutor.findByIdAndUpdate(userId, {
+      // Check if user is blacklisted, set isBlacklisted to false and vice versa
+      isFeatured: tutor.isFeatured ? false : true,
+    });
+
+    res.status(200).json({
+      msg: tutor?.isFeatured ? "User unfeatured" : "User featured",
+    });
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function updateTutorProfile(req, res) {
   const userId = req.params.id;
   try {
@@ -197,8 +220,9 @@ module.exports = {
   getStudents,
   getSingleUser,
   getSingleTutor,
-  deleteUser,
   updateTutorProfile,
   blacklistTutor,
+  featureTutor,
   verifyTutor,
+  deleteUser,
 };
