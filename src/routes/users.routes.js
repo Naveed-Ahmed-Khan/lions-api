@@ -13,11 +13,13 @@ const {
   verifyTutor,
   getSingleTutor,
   featureTutor,
+  getCompleteTutors,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
 
 router.get("/get-tutors", getTutors);
+router.get("/get-complete-tutors", getCompleteTutors);
 router.get("/get-students", getStudents);
 router.get("/get-users", getUsers);
 router.get("/get-user/:id", getSingleUser);
