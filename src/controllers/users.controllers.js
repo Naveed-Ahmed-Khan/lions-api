@@ -79,6 +79,7 @@ async function getSingleTutor(req, res) {
     res.status(404).send({ error });
   }
 }
+
 //////////////////////////////////////////////////////////////////////////////
 async function getSingleUser(req, res) {
   const userId = req.params.id;
