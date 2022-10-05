@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+require("./dbconnect");
 const authRouter = require("./src/routes/auth.routes");
 const userRouter = require("./src/routes/users.routes");
 const jobRouter = require("./src/routes/jobs.routes");
@@ -12,7 +13,7 @@ const areaRouter = require("./src/routes/area.routes");
 const achievementRouter = require("./src/routes/achievements.routes");
 const applicationRouter = require("./src/routes/applications.routes");
 const notificationRouter = require("./src/routes/notifications.routes");
-require("./dbconnect");
+const PaymentRouter = require("./src/routes/payments.routes");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -39,6 +40,7 @@ app.use(areaRouter);
 app.use(cityRouter);
 app.use(subjectRouter);
 app.use(classRouter);
+app.use(PaymentRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello Server!");

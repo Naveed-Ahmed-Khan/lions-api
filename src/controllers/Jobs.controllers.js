@@ -33,7 +33,10 @@ async function getJobs(req, res) {
   }
 
   try {
-    const jobs = await Job.find(filter).populate("user_id").exec();
+    const jobs = await Job.find(filter)
+      .sort({ _id: -1 })
+      .populate("user_id")
+      .exec();
     res.status(200).json(jobs);
     // console.log(jobs);
   } catch (error) {
@@ -45,6 +48,7 @@ async function getJobs(req, res) {
 async function getMyJobs(req, res) {
   try {
     const myJobs = await Job.find({ user_id: req.params.id })
+      .sort({ _id: -1 })
       .populate({ path: "user_id" })
       .exec();
     res.status(200).json(myJobs);

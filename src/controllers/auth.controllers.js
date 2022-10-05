@@ -31,6 +31,7 @@ async function signup(req, res) {
           title: "Incomplete Profile",
           msg: "Users cannot see an incomplete profile. Complete your profile in 'Edit Profile'",
         });
+
         userType = "tutor";
         userId = data._id;
       }

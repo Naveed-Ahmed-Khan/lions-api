@@ -22,7 +22,7 @@ const JobSchema = new mongoose.Schema({
   teachingMode: { type: String, required: true },
 
   description: { type: String, required: true },
-  budget: { type: String, required: true },
+  budget: { type: Number, required: true },
 
   isFeatured: { type: Boolean, default: false },
   isOpen: { type: Boolean, default: true },
