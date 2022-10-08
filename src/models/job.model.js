@@ -8,7 +8,6 @@ const JobSchema = new mongoose.Schema({
     required: true,
     enum: ["Student", "Admin"],
   },
-
   title: { type: String, required: true },
   subjects: { type: Array, required: true },
   class: { type: Array, required: true },

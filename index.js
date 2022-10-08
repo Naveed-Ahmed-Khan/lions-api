@@ -14,6 +14,7 @@ const achievementRouter = require("./src/routes/achievements.routes");
 const applicationRouter = require("./src/routes/applications.routes");
 const notificationRouter = require("./src/routes/notifications.routes");
 const PaymentRouter = require("./src/routes/payments.routes");
+const BlacklistRouter = require("./src/routes/blacklists.routes");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -41,6 +42,7 @@ app.use(cityRouter);
 app.use(subjectRouter);
 app.use(classRouter);
 app.use(PaymentRouter);
+app.use(BlacklistRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello Server!");

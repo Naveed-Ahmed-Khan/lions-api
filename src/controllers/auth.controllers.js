@@ -44,6 +44,14 @@ async function signup(req, res) {
         userId = data._id;
       }
 
+      if (institute) {
+        const data = await Institute.create({
+          ...institute,
+        });
+        userType = "institute";
+        userId = data._id;
+      }
+
       /* if (admin) {
         const data = await Admin.create({
           ...admin,
@@ -51,13 +59,6 @@ async function signup(req, res) {
         userType = "admin";
         userId = data._id;
       }*/
-      /* if (institute) {
-        const data = await Institute.create({
-          ...institute,
-        });
-        userType = "institute";
-        userId = data._id;
-      }  */
 
       const hashedPassword = await bcrypt.hash(password, 10);
       const userData = {
