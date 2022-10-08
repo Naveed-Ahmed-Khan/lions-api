@@ -18,7 +18,7 @@ router.get("/get-payments", getPayments);
 router.get("/get-payment/:id", getSinglePayment);
 router.get("/get-tutor-payment/:id", protect, getTutorPayment);
 router.get("/get-job-payment/:id", protect, getJobPayment);
-router.patch("/update-payment/:id", protect, updatePayment);
+router.patch("/update-payment/:id", updatePayment);
 router.delete("/delete-payment/:id", protect, deletePayment);
 
 module.exports = router;
