@@ -1,9 +1,18 @@
 const Blacklist = require("../models/blacklist.model");
+const Tutor = require("../models/tutor.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addBlacklist(req, res) {
+  const { name, cnic, watsapp, city, profilePic, reason, user_id, userModel } =
+    req.body;
   try {
-    const data = Blacklist.create(req.body);
+    const tutor = await Tutor.create({ name, cnic, watsapp, profilePic, city });
+    const data = await Blacklist.create({
+      tutor_id: tutor._id,
+      user_id:user_id,
+      userModel:userModel,
+      reason:reason,
+    });
     res.status(201).json(data);
     console.log(data);
   } catch (error) {
@@ -13,21 +22,13 @@ async function addBlacklist(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////
 async function getBlacklists(req, res) {
-  const { query } = req;
-
-  console.log(query?.city);
-
   try {
-    let blacklists = [];
-    if (query?.city) {
-      const data = await Blacklist.find().populate("city_id").exec();
-      blacklists = data.filter(
-        (blacklist) => blacklist.city_id.name === query.city
-      );
-    } else {
-      blacklists = await Blacklist.find().populate("city_id").exec();
-    }
-    res.status(200).json(blacklists);
+    const data = await Blacklist.find()
+      .populate("tutor_id")
+      .populate("user_id")
+      .exec();
+
+    res.status(200).json(data);
     // console.log(data);
   } catch (error) {
     res.status(404).json({ error });
@@ -39,7 +40,8 @@ async function getSingleBlacklist(req, res) {
   const blacklistId = req.params.id;
   try {
     const data = await Blacklist.findById(blacklistId)
-      .populate("city_id")
+      .populate("tutor_id")
+      .populate("user_id")
       .exec();
     res.status(200).json(data);
     // console.log(data);

@@ -5,6 +5,7 @@ const User = require("../models/user.model");
 const Student = require("../models/student.model");
 const Tutor = require("../models/tutor.model");
 const Notification = require("../models/notification.model");
+const Institute = require("../models/institute.model");
 const Admin = require("../models/admin.model");
 
 //////////////////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ async function signup(req, res) {
         email: email,
         password: hashedPassword,
         [userType]: userId,
-        userType,
+        userType: userType,
       };
 
       console.log(userData);

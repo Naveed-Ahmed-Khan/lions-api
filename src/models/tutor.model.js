@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Id = mongoose.Schema.Types.ObjectId;
 const TutorSchema = new mongoose.Schema({
-  email: { type: String, required: true },
+  email: { type: String, required: false },
   password: { type: String, required: false },
   account_id: { type: Id, ref: "Account", default: null },
   institute_id: { type: Id, ref: "Institute", default: null },
@@ -19,8 +19,8 @@ const TutorSchema = new mongoose.Schema({
   watsapp: { type: Number, required: false },
   city: { type: String, required: false },
   area: { type: String, required: false },
-  address: { type: String, required: true },
-  teachingModes: { type: Array, required: true },
+  address: { type: String, required: false },
+  teachingModes: { type: Array, required: false },
 
   tag: { type: String, default: "none" },
   profileStatus: { type: String, default: "incomplete" },

@@ -59,6 +59,7 @@ async function getUsers(req, res) {
     const usersData = await User.find()
       .populate("student")
       .populate("tutor")
+      .populate("institute")
       .populate("admin")
       .exec();
     res.status(200).json(usersData);
@@ -87,6 +88,7 @@ async function getSingleUser(req, res) {
     const userData = await User.findById(userId)
       .populate("student")
       .populate("tutor")
+      .populate("institute")
       .populate("admin")
       .exec();
     res.status(200).json(userData);
