@@ -1,6 +1,8 @@
 const User = require("../models/user.model");
 const Student = require("../models/student.model");
 const Tutor = require("../models/tutor.model");
+const Institute = require("../models/institute.model");
+const Authenticator = require("../models/authenticator.model");
 
 //////////////////////////////////////////////////////////////////////////////
 async function getCompleteTutors(req, res) {
@@ -54,6 +56,16 @@ async function getStudents(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function getInstitutes(req, res) {
+  try {
+    const institutes = await Institute.find().sort({_id:-1}).exec();
+    res.status(200).json(institutes);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function getUsers(req, res) {
   try {
     const usersData = await User.find()
@@ -82,6 +94,18 @@ async function getSingleTutor(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function getSingleInstitute(req, res) {
+  const userId = req.params.id;
+  try {
+    const instituteData = await Institute.findById(userId);
+    res.status(200).json(instituteData);
+    // console.log(instituteData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function getSingleUser(req, res) {
   const userId = req.params.id;
   try {
@@ -90,6 +114,7 @@ async function getSingleUser(req, res) {
       .populate("tutor")
       .populate("institute")
       .populate("admin")
+      .populate("authenticator")
       .exec();
     res.status(200).json(userData);
     // console.log(userData);
@@ -130,6 +155,29 @@ async function verifyTutor(req, res) {
         : "User added to verified list",
     });
     // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function verifyInstitute(req, res) {
+  const instituteId = req.params.id;
+
+  try {
+    const institute = await Institute.findById(instituteId);
+    // console.log(institute);
+
+    await Institute.findByIdAndUpdate(instituteId, {
+      // Check if user is blacklisted, set isBlacklisted to false and vice versa
+      isVerified: institute.isVerified ? false : true,
+    });
+
+    res.status(200).json({
+      msg: institute.isVerified
+        ? "Institute removed from verified list"
+        : "Institute added to verified list",
+    });
   } catch (error) {
     res.status(404).send({ error });
   }
@@ -222,6 +270,9 @@ async function deleteUser(req, res) {
 module.exports = {
   getUsers,
   getCompleteTutors,
+  getInstitutes,
+  getSingleInstitute,
+  verifyInstitute,
   getTutors,
   getStudents,
   getSingleUser,

@@ -24,6 +24,7 @@ async function addBlacklist(req, res) {
 async function getBlacklists(req, res) {
   try {
     const data = await Blacklist.find()
+    .sort({ _id: -1 })
       .populate("tutor_id")
       .populate("user_id")
       .exec();

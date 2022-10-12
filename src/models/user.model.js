@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
   student: { type: Id, ref: "Student", default: null },
   admin: { type: Id, ref: "Admin", default: null },
   institute: { type: Id, ref: "Institute", default: null },
+  authenticator: { type: Id, ref: "Authenticator", default: null },
 });
 
 const User = new mongoose.model("User", UserSchema);
