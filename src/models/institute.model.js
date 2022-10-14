@@ -8,7 +8,7 @@ const InstituteSchema = new mongoose.Schema({
   owner: { type: String, required: true },
   cnic: { type: Number, required: true },
   watsapp: { type: Number, required: false },
-  city: { type: String, required: true },
+  city: { type: String, required: false },
   area: { type: String, required: false },
   address: { type: String, required: true },
   profilePic: { type: String, required: false },

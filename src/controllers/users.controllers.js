@@ -58,7 +58,7 @@ async function getStudents(req, res) {
 //////////////////////////////////////////////////////////////////////////////
 async function getInstitutes(req, res) {
   try {
-    const institutes = await Institute.find().sort({_id:-1}).exec();
+    const institutes = await Institute.find({},{ "profilePic": 0, "cnicPic": 0}).sort({_id:-1}).exec();
     res.status(200).json(institutes);
   } catch (error) {
     res.status(404).send({ error });
