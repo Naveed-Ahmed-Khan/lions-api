@@ -29,6 +29,7 @@ router.get("/get-user/:id", getSingleUser);
 router.get("/get-institute/:id", getSingleInstitute);
 router.get("/get-tutor/:id", getSingleTutor);
 router.patch("/update-tutor/:id", protect, updateTutorProfile);
+router.patch("/update-institute/:id", protect, updateTutorProfile);
 router.get("/verify-tutor/:id", verifyTutor);
 router.get("/verify-institute/:id", verifyInstitute);
 router.get("/feature-tutor/:id", featureTutor);

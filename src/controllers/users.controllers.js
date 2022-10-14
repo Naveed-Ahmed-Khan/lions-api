@@ -244,6 +244,20 @@ async function updateTutorProfile(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function updateInstitute(req, res) {
+  const instituteId = req.params.id;
+  try {
+    const data = await Institute.findByIdAndUpdate(instituteId, {
+      ...req.body
+    });
+    res.status(200).json(data);
+    // console.log(data);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function deleteUser(req, res) {
   const userId = req.params.id;
   try {
@@ -278,6 +292,7 @@ module.exports = {
   getSingleUser,
   getSingleTutor,
   updateTutorProfile,
+  updateInstitute,
   blacklistTutor,
   featureTutor,
   verifyTutor,
