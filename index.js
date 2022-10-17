@@ -20,6 +20,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 const corsOptions = {
+  
   origin: true,
   // credentials: true,
   // allowedHeaders:
@@ -27,7 +28,7 @@ const corsOptions = {
   // exposedHeaders: "Set-Cookie",
 };
 
-app.use(cors(corsOptions));
+app.use('*',cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 
