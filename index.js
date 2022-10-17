@@ -36,6 +36,7 @@ app.use(authRouter);
 app.use(applicationRouter);
 app.use(achievementRouter);
 app.use(notificationRouter);
+app.use(BlacklistRouter);
 app.use(userRouter);
 app.use(jobRouter);
 app.use(areaRouter);
@@ -43,7 +44,6 @@ app.use(cityRouter);
 app.use(subjectRouter);
 app.use(classRouter);
 app.use(PaymentRouter);
-app.use(BlacklistRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello Server!");

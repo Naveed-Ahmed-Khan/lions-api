@@ -11,10 +11,10 @@ const {
 
 const router = express.Router();
 
-router.post("/add-blacklist",protect, addBlacklist);
-router.get("/get-blacklists",protect, getBlacklists);
-router.get("/get-blacklist/:id",protect, getSingleBlacklist);
-router.patch("/update-blacklist/:id", protect, updateBlacklist);
-router.delete("/delete-blacklist/:id", protect, deleteBlacklist);
+router.post("/add-blacklist", addBlacklist);
+router.get("/get-blacklists", getBlacklists);
+router.get("/get-blacklist/:id", getSingleBlacklist);
+router.patch("/update-blacklist/:id",  updateBlacklist);
+router.delete("/delete-blacklist/:id",  deleteBlacklist);
 
 module.exports = router;
