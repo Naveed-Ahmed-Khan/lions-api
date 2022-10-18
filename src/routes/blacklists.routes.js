@@ -7,12 +7,14 @@ const {
   addBlacklist,
   deleteBlacklist,
   updateBlacklist,
+  getCompleteBlacklists,
 } = require("../controllers/blacklists.controllers");
 
 const router = express.Router();
 
 router.post("/add-blacklist", addBlacklist);
 router.get("/get-blacklists", getBlacklists);
+router.get("/get-complete-blacklists", getCompleteBlacklists);
 router.get("/get-blacklist/:id", getSingleBlacklist);
 router.patch("/update-blacklist/:id",  updateBlacklist);
 router.delete("/delete-blacklist/:id",  deleteBlacklist);

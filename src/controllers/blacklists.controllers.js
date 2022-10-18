@@ -38,6 +38,24 @@ async function getBlacklists(req, res) {
     res.status(404).json({ error });
   }
 }
+//////////////////////////////////////////////////////////////////////////////
+async function getCompleteBlacklists(req, res) {
+  try {
+    const data = await Blacklist.find()
+      .sort({ _id: -1 })
+      .populate({
+        path: 'tutor_id', 
+        select: ['_id', 'name', 'cnic', 'watsapp', 'city', 'profilePic']
+      })
+      .populate("user_id")
+      .exec();
+
+    res.status(200).json(data);
+    // console.log(data);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 async function getSingleBlacklist(req, res) {
@@ -84,6 +102,7 @@ module.exports = {
   addBlacklist,
   getBlacklists,
   getSingleBlacklist,
+  getCompleteBlacklists,
   updateBlacklist,
   deleteBlacklist,
 };
