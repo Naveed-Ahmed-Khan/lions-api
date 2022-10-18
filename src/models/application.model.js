@@ -7,6 +7,7 @@ const ApplicationSchema = new mongoose.Schema({
   coverLetter: { type: String, required: true },
   quialification: { type: String, required: true },
   expectedBudget: { type: String, required: true },
+  distance: { type: String, required: false },
   isShortlisted: { type: Boolean, default: false },
   isSelected: { type: Boolean, default: false },
   isRejected: { type: Boolean, default: false },
