@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/add-blacklist", addBlacklist);
 router.get("/get-blacklists", getBlacklists);
-router.get("/get-all-blacklists", getCompleteBlacklists);
+router.get("/get-allblacklisted", getCompleteBlacklists);
 router.get("/get-blacklist/:id", getSingleBlacklist);
 router.patch("/update-blacklist/:id",  updateBlacklist);
 router.delete("/delete-blacklist/:id",  deleteBlacklist);

@@ -42,11 +42,7 @@ async function getBlacklists(req, res) {
 async function getCompleteBlacklists(req, res) {
   try {
     const data = await Blacklist.find()
-      .sort({ _id: -1 })
-      .populate({
-        path: 'tutor_id', 
-        select: ['_id', 'name', 'cnic', 'watsapp', 'city', 'profilePic']
-      })
+      .populate('tutor_id')
       .populate("user_id")
       .exec();
 
