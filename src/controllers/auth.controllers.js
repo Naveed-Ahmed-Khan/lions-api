@@ -29,8 +29,15 @@ async function signup(req, res) {
         await Notification.create({
           tutor_id: data._id,
           type: "warning",
-          title: "Incomplete Profile",
+          title: "Incomplete Profile!",
           msg: "Users cannot see an incomplete profile. Complete your profile in 'Edit Profile'",
+        });
+
+        await Notification.create({
+          tutor_id: data._id,
+          type: "danger",
+          title: "Unverified Profile!",
+          msg: "An unverified tutor cannot apply on Jobs. Pay your verification fee of Rs 1500",
         });
 
         userType = "tutor";
