@@ -45,6 +45,18 @@ async function getJobs(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function getFeaturedJobs(req, res) {
+  try {
+    const jobs = await Job.find({ isFeatured: true })
+      .populate({ path: "user_id", select: ["_id", "name"] })
+      .exec();
+    res.status(200).json(jobs);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function getMyJobs(req, res) {
   try {
     const myJobs = await Job.find({ user_id: req.params.id })
@@ -119,6 +131,7 @@ async function deleteJob(req, res) {
 module.exports = {
   updateApplicants,
   getJobs,
+  getFeaturedJobs,
   getMyJobs,
   getSingleJob,
   changeJobStatus,

@@ -47,6 +47,29 @@ async function getTutors(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function getFeaturedTutors(req, res) {
+  try {
+    const tutors = await Tutor.find(
+      { email: { $exists: true }, isFeatured: true },
+      {
+        bannerImage: 0,
+        notifications: 0,
+        // locations: 0,
+        // subjectsTaught: 0,
+        // qualifications: 0,
+        slots: 0,
+        experience: 0,
+        sections: 0,
+      }
+    )
+      .sort({ _id: -1 })
+      .exec();
+    res.status(200).json(tutors);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+//////////////////////////////////////////////////////////////////////////////
 async function getTutorsWithoutPics(req, res) {
   try {
     const tutors = await Tutor.find(
@@ -316,6 +339,7 @@ module.exports = {
   getSingleInstitute,
   verifyInstitute,
   getTutorsWithoutPics,
+  getFeaturedTutors,
   getTutors,
   getStudents,
   getSingleUser,
