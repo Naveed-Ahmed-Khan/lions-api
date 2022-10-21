@@ -5,7 +5,7 @@ const capitalize = require("../util/capitalize");
 async function addClass(req, res) {
   const name = capitalize(req.body.name);
   try {
-    const data = await Class.create({ name: name });
+    const data = await Class.create({ name: name, type: req.body.type });
     res.status(201).json(data);
     // console.log(data);
   } catch (error) {
@@ -17,6 +17,27 @@ async function addClass(req, res) {
 async function getClasses(req, res) {
   try {
     const data = await Class.find();
+    res.status(200).json(data);
+    // console.log(data);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function getTutorClasses(req, res) {
+  try {
+    const data = await Class.find({ type: "tutor" });
+    res.status(200).json(data);
+    // console.log(data);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
+//////////////////////////////////////////////////////////////////////////////
+async function getStudentClasses(req, res) {
+  try {
+    const data = await Class.find({ type: "student" });
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
@@ -66,6 +87,8 @@ async function deleteClass(req, res) {
 module.exports = {
   addClass,
   getClasses,
+  getStudentClasses,
+  getTutorClasses,
   getSingleClass,
   updateClass,
   deleteClass,

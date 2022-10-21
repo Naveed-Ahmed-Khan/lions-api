@@ -16,11 +16,13 @@ const {
   getInstitutes,
   getSingleInstitute,
   verifyInstitute,
+  getTutorsWithoutPics,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
 
 router.get("/get-tutors", getTutors);
+router.get("/get-tutorswithout-pics", getTutorsWithoutPics);
 router.get("/get-institutes", getInstitutes);
 router.get("/get-complete-tutors", getCompleteTutors);
 router.get("/get-students", getStudents);

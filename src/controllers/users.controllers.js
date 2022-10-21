@@ -36,9 +36,35 @@ async function getCompleteTutors(req, res) {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
 async function getTutors(req, res) {
   try {
     const tutors = await Tutor.find();
+    res.status(200).json(tutors);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function getTutorsWithoutPics(req, res) {
+  try {
+    const tutors = await Tutor.find(
+      { email: { $exists: true } },
+      {
+        profilePic: 0,
+        bannerImage: 0,
+        notifications: 0,
+        locations: 0,
+        subjectsTaught: 0,
+        qualifications: 0,
+        slots: 0,
+        experience: 0,
+        sections: 0,
+      }
+    )
+      .sort({ _id: -1 })
+      .exec();
     res.status(200).json(tutors);
   } catch (error) {
     res.status(404).send({ error });
@@ -58,7 +84,9 @@ async function getStudents(req, res) {
 //////////////////////////////////////////////////////////////////////////////
 async function getInstitutes(req, res) {
   try {
-    const institutes = await Institute.find({},{ "profilePic": 0, "cnicPic": 0}).sort({_id:-1}).exec();
+    const institutes = await Institute.find({}, { profilePic: 0, cnicPic: 0 })
+      .sort({ _id: -1 })
+      .exec();
     res.status(200).json(institutes);
   } catch (error) {
     res.status(404).send({ error });
@@ -248,7 +276,7 @@ async function updateInstitute(req, res) {
   const instituteId = req.params.id;
   try {
     const data = await Institute.findByIdAndUpdate(instituteId, {
-      ...req.body
+      ...req.body,
     });
     res.status(200).json(data);
     // console.log(data);
@@ -287,6 +315,7 @@ module.exports = {
   getInstitutes,
   getSingleInstitute,
   verifyInstitute,
+  getTutorsWithoutPics,
   getTutors,
   getStudents,
   getSingleUser,

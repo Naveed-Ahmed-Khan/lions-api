@@ -37,7 +37,7 @@ async function signup(req, res) {
           tutor_id: data._id,
           type: "danger",
           title: "Unverified Profile!",
-          msg: "An unverified tutor cannot apply on Jobs. Pay your verification fee of Rs 1500",
+          msg: "An unverified tutor cannot apply on Jobs. Pay your verification fee of Rs 1500 to 03328200082 Jazz cash",
         });
 
         userType = "tutor";
@@ -105,19 +105,19 @@ async function signin(req, res) {
       } else {
         if (preUser.institute && !preUser.institute.isVerified) {
           res.status(404).json({ error: "Unverified User" });
-        }else{
-        const token = jwt.sign(
-          { id: preUser._id },
-          process.env.JWT_SECRET /* {
+        } else {
+          const token = jwt.sign(
+            { id: preUser._id },
+            process.env.JWT_SECRET /* {
           expiresIn: "1h",
         } */
-        );
-        res.status(200).json({
-          user_id: preUser._id,
-          userType: preUser.userType,
-          token,
-        });
-        /* res.status(200).json({
+          );
+          res.status(200).json({
+            user_id: preUser._id,
+            userType: preUser.userType,
+            token,
+          });
+          /* res.status(200).json({
           user_id:
             preUser.tutor ||
             preUser.student ||
@@ -126,7 +126,7 @@ async function signin(req, res) {
           userType: preUser.userType,
           token,
         }); */
-        /* {
+          /* {
         // console.log(token);
         // const prodOptions = {
         //   sameSite: "none",
@@ -149,8 +149,8 @@ async function signin(req, res) {
         // res.cookie("token", token, prodOptions);
         // res.cookie("user_id", preUser._id.toString(), prodOptions);
         } */
+        }
       }
-    }
     }
   } catch (error) {
     res.status(404).send(error.message);
