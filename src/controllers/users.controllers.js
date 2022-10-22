@@ -95,6 +95,59 @@ async function getTutorsWithoutPics(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function getTutorsWithPics(req, res) {
+  try {
+    const tutors = await Tutor.find(
+      { email: { $exists: true }, profileStatus: "complete" },
+      {
+        _id: 1,
+        profilePic: 1,
+        // bannerImage: 0,
+        // notifications: 0,
+        // locations: 0,
+        // subjectsTaught: 0,
+        // qualifications: 0,
+        // slots: 0,
+        // experience: 0,
+        // sections: 0,
+        // teachingModes: 0,
+      }
+    )
+      .sort({ _id: -1 })
+      .exec();
+    res.status(200).json(tutors);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function getTutorsWithoutProfilePicOnly(req, res) {
+  try {
+    const tutors = await Tutor.find(
+      { email: { $exists: true }, profileStatus: "complete" },
+      {
+        profilePic: 0,
+        bannerImage: 0,
+        notifications: 0,
+        locations: 0,
+        // subjectsTaught: 0,
+        // qualifications: 0,
+        slots: 0,
+        experience: 0,
+        // sections: 0,
+        // teachingModes: 0,
+      }
+    )
+      .sort({ _id: -1 })
+      .exec();
+    res.status(200).json(tutors);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function getStudents(req, res) {
   try {
     const students = await Student.find();
@@ -338,7 +391,9 @@ module.exports = {
   getInstitutes,
   getSingleInstitute,
   verifyInstitute,
+  getTutorsWithoutProfilePicOnly,
   getTutorsWithoutPics,
+  getTutorsWithPics,
   getFeaturedTutors,
   getTutors,
   getStudents,
