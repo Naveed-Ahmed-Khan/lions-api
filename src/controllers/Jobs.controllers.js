@@ -35,7 +35,7 @@ async function getJobs(req, res) {
   try {
     const jobs = await Job.find(filter)
       .sort({ _id: -1 })
-      .populate("user_id")
+      .populate({ path: "user_id", select: ["_id", "name"] })
       .exec();
     res.status(200).json(jobs);
     // console.log(jobs);
