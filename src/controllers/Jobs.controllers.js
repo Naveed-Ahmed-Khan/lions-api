@@ -35,7 +35,7 @@ async function getJobs(req, res) {
   try {
     const jobs = await Job.find(filter)
       .sort({ _id: -1 })
-      .populate({ path: "user_id" })
+      // .populate({ path: "user_id" })
       .exec();
     res.status(200).json(jobs);
     // console.log(jobs);
@@ -48,7 +48,7 @@ async function getJobs(req, res) {
 async function getFeaturedJobs(req, res) {
   try {
     const jobs = await Job.find({ isFeatured: true })
-      .populate({ path: "user_id" })
+      // .populate({ path: "user_id" })
       .exec();
     res.status(200).json(jobs);
   } catch (error) {
