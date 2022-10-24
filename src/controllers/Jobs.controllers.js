@@ -35,7 +35,7 @@ async function getJobs(req, res) {
   try {
     const jobs = await Job.find(filter)
       .sort({ _id: -1 })
-      // .populate({ path: "user_id" })
+      .populate({ path: "user_id",select: ['_id', 'name'] })
       .exec();
     res.status(200).json(jobs);
     // console.log(jobs);
@@ -48,7 +48,7 @@ async function getJobs(req, res) {
 async function getFeaturedJobs(req, res) {
   try {
     const jobs = await Job.find({ isFeatured: true })
-      // .populate({ path: "user_id" })
+      .populate({ path: "user_id",select: ['_id', 'name'] })
       .exec();
     res.status(200).json(jobs);
   } catch (error) {
@@ -61,7 +61,7 @@ async function getMyJobs(req, res) {
   try {
     const myJobs = await Job.find({ user_id: req.params.id })
       .sort({ _id: -1 })
-      .populate({ path: "user_id" })
+      .populate({ path: "user_id",select: ['_id', 'name'] })
       .exec();
     res.status(200).json(myJobs);
     // console.log(myJobs);
@@ -75,7 +75,7 @@ async function getSingleJob(req, res) {
   const JobId = req.params.id;
   try {
     const JobData = await Job.findById(JobId)
-      // .populate("user_id")
+      .populate({ path: "user_id",select: ['_id', 'name'] })
       .exec();
     res.status(200).json(JobData);
     // console.log(JobData);
