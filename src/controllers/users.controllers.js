@@ -26,7 +26,9 @@ async function getCompleteTutors(req, res) {
   if (query.area) {
     filter["locations.places"] = query.area;
   }
-
+  if (query.name) {
+    filter["name"] = { $regex: query.name, $options: "i" };
+  }
   // console.log(filter);
   try {
     const tutors = await Tutor.find(filter);
