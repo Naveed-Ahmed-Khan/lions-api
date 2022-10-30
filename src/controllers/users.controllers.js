@@ -31,7 +31,20 @@ async function getCompleteTutors(req, res) {
   }
   // console.log(filter);
   try {
-    const tutors = await Tutor.find(filter);
+    const tutors = await Tutor.find(filter, {
+      profilePic: 0,
+      bannerImage: 0,
+      notifications: 0,
+      locations: 0,
+      // subjectsTaught: 0,
+      // qualifications: 0,
+      slots: 0,
+      experience: 0,
+      // sections: 0,
+      // teachingModes: 0,
+    })
+      .sort({ _id: -1 })
+      .exec();
     res.status(200).json(tutors);
   } catch (error) {
     res.status(404).send({ error });
