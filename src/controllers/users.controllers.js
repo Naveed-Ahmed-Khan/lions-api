@@ -400,6 +400,21 @@ async function deleteUser(req, res) {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
+async function deleteTutor(req, res) {
+  const tutorId = req.params.id;
+  try {
+    await Tutor.findByIdAndDelete(tutorId);
+    await User.findOneAndRemove({tutor:tutorId})
+
+    res.status(200).json({ msg: "User Deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: error });
+  }
+}
+
+
 module.exports = {
   getUsers,
   getCompleteTutors,
@@ -420,4 +435,5 @@ module.exports = {
   featureTutor,
   verifyTutor,
   deleteUser,
+  deleteTutor,
 };

@@ -119,6 +119,26 @@ async function updateApplicants(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+async function featureJob(req, res) {
+  const jobId = req.params.id;
+
+  try {
+    const job = await Job.findById(jobId);
+
+    await Job.findByIdAndUpdate(jobId, {
+      isFeatured: job.isFeatured ? false : true,
+    });
+
+    res.status(200).json({
+      msg: job?.isFeatured ? "Job unfeatured" : "Job featured",
+    });
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 async function deleteJob(req, res) {
   const JobId = req.params.id;
   try {
@@ -136,6 +156,7 @@ module.exports = {
   getFeaturedJobs,
   getMyJobs,
   getSingleJob,
+  featureJob,
   changeJobStatus,
   addJob,
   deleteJob,

@@ -44,5 +44,6 @@ router.get("/verify-institute/:id", verifyInstitute);
 router.get("/feature-tutor/:id", featureTutor);
 router.get("/blacklist-tutor/:id", blacklistTutor);
 router.delete("/delete-user/:id", protect, deleteUser);
+router.delete("/delete-tutor/:id", deleteUser);
 
 module.exports = router;
