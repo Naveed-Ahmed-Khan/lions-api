@@ -21,6 +21,7 @@ const {
   getTutorsWithoutProfile,
   getTutorsWithPics,
   getTutorsWithoutProfilePicOnly,
+  deleteTutor,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
@@ -44,6 +45,6 @@ router.get("/verify-institute/:id", verifyInstitute);
 router.get("/feature-tutor/:id", featureTutor);
 router.get("/blacklist-tutor/:id", blacklistTutor);
 router.delete("/delete-user/:id", protect, deleteUser);
-router.delete("/delete-tutor/:id", deleteUser);
+router.delete("/delete-tutor/:id", deleteTutor);
 
 module.exports = router;
