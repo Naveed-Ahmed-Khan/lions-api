@@ -11,12 +11,14 @@ const {
   changeJobStatus,
   getFeaturedJobs,
   featureJob,
+  getPaginatedJobs,
 } = require("../controllers/Jobs.controllers");
 
 const router = express.Router();
 
 router.post("/add-job", protect, addJob);
 router.get("/get-jobs", getJobs);
+router.get("/get-paginatedjobs", getPaginatedJobs);
 router.get("/get-featured-jobs", getFeaturedJobs);
 router.get("/get-myjobs/:id", getMyJobs);
 router.get("/feature-job/:id", featureJob);

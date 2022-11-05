@@ -3,11 +3,71 @@ const Student = require("../models/student.model");
 const Tutor = require("../models/tutor.model");
 const Institute = require("../models/institute.model");
 const Authenticator = require("../models/authenticator.model");
+const pagination = require("../util/pagination");
+
+//////////////////////////////////////////////////////////////////////////////
+async function getPaginatedTutors(req, res) {
+  const { query } = req;
+
+  const page = parseInt(query.page || "1");
+  const limit = parseInt(query.limit || "5");
+  const skip = (page - 1) * limit;
+
+  const options = {
+    profilePic: 0,
+    bannerImage: 0,
+    notifications: 0,
+    locations: 0,
+    // qualifications: 0,
+    slots: 0,
+    experience: 0,
+    // sections: 0,
+    // teachingModes: 0,
+  };
+  const filter = { profileStatus: "complete" };
+
+  if (query.qualification) {
+    filter["qualifications.degree"] = query.qualification;
+  }
+  if (query.subject) {
+    filter["subjectsTaught.name"] = query.subject;
+  }
+  if (query.class) {
+    filter["subjectsTaught.classes.title"] = query.class;
+  }
+  if (query.city) {
+    filter["locations.city"] = query.city;
+  }
+  if (query.area) {
+    filter["locations.places"] = query.area;
+  }
+  if (query.name) {
+    filter["name"] = { $regex: query.name, $options: "i" };
+  }
+  // console.log(filter);
+
+  try {
+    const docLength = await Tutor.countDocuments(filter, options).exec();
+
+    let tutors = [];
+    tutors = await Tutor.find({ ...filter, profileStatus: "complete" }, options)
+      .skip(skip)
+      .limit(limit)
+      .sort({ _id: -1 })
+      .exec();
+
+    const pageData = pagination(docLength, page, limit);
+    console.log(tutors);
+
+    res.status(200).json({ pageData, tutors });
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 async function getCompleteTutors(req, res) {
   const { query } = req;
-
   // let filter = {};
   let filter = { profileStatus: "complete" };
 
@@ -43,6 +103,7 @@ async function getCompleteTutors(req, res) {
       // sections: 0,
       // teachingModes: 0,
     })
+
       .sort({ _id: -1 })
       .exec();
     res.status(200).json(tutors);
@@ -84,6 +145,7 @@ async function getFeaturedTutors(req, res) {
     res.status(404).send({ error });
   }
 }
+
 //////////////////////////////////////////////////////////////////////////////
 async function getTutorsWithoutPics(req, res) {
   try {
@@ -111,25 +173,46 @@ async function getTutorsWithoutPics(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////
 async function getTutorsWithPics(req, res) {
+  const { query } = req;
+
+  const page = parseInt(query.page || "1");
+  const limit = parseInt(query.limit || "5");
+  const skip = (page - 1) * limit;
+
+  const options = { _id: 1, profilePic: 1 };
+
+  const filter = { profileStatus: "complete" };
+
+  if (query.qualification) {
+    filter["qualifications.degree"] = query.qualification;
+  }
+  if (query.subject) {
+    filter["subjectsTaught.name"] = query.subject;
+  }
+  if (query.class) {
+    filter["subjectsTaught.classes.title"] = query.class;
+  }
+  if (query.city) {
+    filter["locations.city"] = query.city;
+  }
+  if (query.area) {
+    filter["locations.places"] = query.area;
+  }
+  if (query.name) {
+    filter["name"] = { $regex: query.name, $options: "i" };
+  }
+  // console.log(filter);
+
   try {
-    const tutors = await Tutor.find(
-      { email: { $exists: true }, profileStatus: "complete" },
-      {
-        _id: 1,
-        profilePic: 1,
-        // bannerImage: 0,
-        // notifications: 0,
-        // locations: 0,
-        // subjectsTaught: 0,
-        // qualifications: 0,
-        // slots: 0,
-        // experience: 0,
-        // sections: 0,
-        // teachingModes: 0,
-      }
-    )
+    const docLength = await Tutor.countDocuments(filter, options).exec();
+
+    let tutors = [];
+    tutors = await Tutor.find({ ...filter, profileStatus: "complete" }, options)
+      .skip(skip)
+      .limit(limit)
       .sort({ _id: -1 })
       .exec();
+
     res.status(200).json(tutors);
   } catch (error) {
     res.status(404).send({ error });
@@ -405,7 +488,7 @@ async function deleteTutor(req, res) {
   const tutorId = req.params.id;
   try {
     await Tutor.findByIdAndDelete(tutorId);
-    await User.findOneAndRemove({tutor:tutorId})
+    await User.findOneAndRemove({ tutor: tutorId });
 
     res.status(200).json({ msg: "User Deleted" });
   } catch (error) {
@@ -414,9 +497,9 @@ async function deleteTutor(req, res) {
   }
 }
 
-
 module.exports = {
   getUsers,
+  getPaginatedTutors,
   getCompleteTutors,
   getInstitutes,
   getSingleInstitute,

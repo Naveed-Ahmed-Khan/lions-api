@@ -15,7 +15,7 @@ async function addCity(req, res) {
 async function getAllCities(req, res) {
   try {
     const data = await City.find({}).exec();
-    console.log(data);
+    // console.log(data);
     res.status(200).json(data);
   } catch (error) {
     res.status(404).json({ error });

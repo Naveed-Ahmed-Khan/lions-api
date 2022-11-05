@@ -22,11 +22,13 @@ const {
   getTutorsWithPics,
   getTutorsWithoutProfilePicOnly,
   deleteTutor,
+  getPaginatedTutors,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
 
 router.get("/get-tutors", getTutors);
+router.get("/get-paginatedtutors", getPaginatedTutors);
 router.get("/get-tutorswithout-pics", getTutorsWithoutPics);
 router.get("/get-tutorswithout-profilePics", getTutorsWithoutProfilePicOnly);
 router.get("/get-tutors-pics", getTutorsWithPics);

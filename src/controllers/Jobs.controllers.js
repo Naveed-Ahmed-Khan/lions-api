@@ -1,4 +1,5 @@
 const Job = require("../models/job.model");
+const pagination = require("../util/pagination");
 
 //////////////////////////////////////////////////////////////////////////////
 async function addJob(req, res) {
@@ -11,6 +12,49 @@ async function addJob(req, res) {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
+async function getPaginatedJobs(req, res) {
+  const { query } = req;
+
+  const page = parseInt(query.page || "1");
+  const limit = parseInt(query.limit || "7");
+  const skip = (page - 1) * limit;
+
+  let filter = {};
+  if (query.qualification) {
+    filter["qualification"] = query.qualification;
+  }
+  if (query.subject) {
+    filter["subjects"] = query.subject;
+  }
+  if (query.class) {
+    filter["class"] = query.class;
+  }
+  if (query.city) {
+    filter["location.city"] = query.city;
+  }
+  if (query.area) {
+    filter["location.place"] = query.area;
+  }
+
+  try {
+    const docLength = await Job.countDocuments(filter).exec();
+
+    const jobs = await Job.find(filter)
+      .populate({ path: "user_id", select: ["_id", "name"] })
+      .skip(skip)
+      .limit(limit)
+      .sort({ _id: -1 })
+      .exec();
+
+    const pageData = pagination(docLength, page, limit);
+
+    res.status(200).json({ pageData, jobs });
+    // console.log(jobs);
+  } catch (error) {
+    res.status(404).json({ error });
+  }
+}
 //////////////////////////////////////////////////////////////////////////////
 async function getJobs(req, res) {
   const { query } = req;
@@ -35,8 +79,9 @@ async function getJobs(req, res) {
   try {
     const jobs = await Job.find(filter)
       .sort({ _id: -1 })
-      .populate({ path: "user_id",select: ['_id', 'name'] })
+      .populate({ path: "user_id", select: ["_id", "name"] })
       .exec();
+
     res.status(200).json(jobs);
     // console.log(jobs);
   } catch (error) {
@@ -48,7 +93,7 @@ async function getJobs(req, res) {
 async function getFeaturedJobs(req, res) {
   try {
     const jobs = await Job.find({ isFeatured: true })
-      .populate({ path: "user_id",select: ['_id', 'name'] })
+      .populate({ path: "user_id", select: ["_id", "name"] })
       .exec();
     res.status(200).json(jobs);
   } catch (error) {
@@ -61,7 +106,7 @@ async function getMyJobs(req, res) {
   try {
     const myJobs = await Job.find({ user_id: req.params.id })
       .sort({ _id: -1 })
-      .populate({ path: "user_id",select: ['_id', 'name'] })
+      .populate({ path: "user_id", select: ["_id", "name"] })
       .exec();
     res.status(200).json(myJobs);
     // console.log(myJobs);
@@ -75,7 +120,7 @@ async function getSingleJob(req, res) {
   const JobId = req.params.id;
   try {
     const JobData = await Job.findById(JobId)
-      .populate({ path: "user_id",select: ['_id', 'name'] })
+      .populate({ path: "user_id", select: ["_id", "name"] })
       .exec();
     res.status(200).json(JobData);
     // console.log(JobData);
@@ -153,6 +198,7 @@ async function deleteJob(req, res) {
 module.exports = {
   updateApplicants,
   getJobs,
+  getPaginatedJobs,
   getFeaturedJobs,
   getMyJobs,
   getSingleJob,

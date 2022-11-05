@@ -5,7 +5,7 @@ async function addArea(req, res) {
   try {
     const data = Area.create(req.body);
     res.status(201).json(data);
-    console.log(data);
+    // console.log(data);
   } catch (error) {
     res.status(404).json({ error });
   }
@@ -15,7 +15,7 @@ async function addArea(req, res) {
 async function getAreas(req, res) {
   const { query } = req;
 
-  console.log(query?.city);
+  // console.log(query?.city);
 
   try {
     let areas = [];
