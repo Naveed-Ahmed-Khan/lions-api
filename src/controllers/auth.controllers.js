@@ -30,7 +30,7 @@ async function signup(req, res) {
           tutor_id: data._id,
           type: "warning",
           title: "Incomplete Profile!",
-          msg: "Users cannot see an incomplete profile. Complete your profile in 'Edit Profile'",
+          msg: "Parents cannot see an incomplete profile. Complete your profile in 'Edit Profile'",
         });
 
         await Notification.create({
