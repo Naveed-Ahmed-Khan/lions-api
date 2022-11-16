@@ -7,6 +7,8 @@ const Tutor = require("../models/tutor.model");
 const Notification = require("../models/notification.model");
 const Institute = require("../models/institute.model");
 const Admin = require("../models/admin.model");
+const Otp = require("../models/otp.model");
+const nodemailer = require("nodemailer");
 
 //////////////////////////////////////////////////////////////////////////////
 async function signup(req, res) {
@@ -157,4 +159,80 @@ async function signin(req, res) {
   }
 }
 
-module.exports = { signup, signin };
+//////////////////////////////////////////////////////////////////////////////
+async function forgetPassword(req, res) {
+  const { email } = req.body;
+  try {
+    const preUser = await User.findOne({ email: email });
+    if (!preUser) {
+      res.status(404).json({ error: "This user doesnot exist" });
+    } else {
+      // console.log(preUser);
+      const otpCode = Math.floor(Math.random() * 10000 + 1);
+      sendMail(preUser.email, otpCode);
+      await Otp.create({
+        email: preUser.email,
+        otpCode: otpCode,
+        expiresIn: new Date().getTime() + 300 * 1000,
+      });
+      res.status(200).json({ message: "Mail sent" });
+    }
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+async function changePassword(req, res) {
+  const { otpCode, password, tutorId } = req.body;
+  try {
+    const otpData = await Otp.findOne({ otpCode });
+    if (!otpData) {
+      res.status(404).json({ error: "Invalid Otp" });
+    } else {
+      const currentTime = new Date().getTime();
+      const diff = otpData.expiresIn - currentTime;
+      if (diff < 0) {
+        await Otp.findByIdAndDelete(otpData._id);
+        res.status(404).json({ error: "Token Expired" });
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const updated = await User.findOneAndUpdate(
+          { tutor: tutorId },
+          { password: hashedPassword }
+        );
+        res.status(200).json(updated);
+      }
+    }
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+}
+
+function sendMail(email, otp) {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: process.env.USER_MAIL,
+      pass: process.env.MAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: "educationists.org.pk",
+    to: email,
+    subject: "Reset Password",
+    text: `Otp for Reset Password  is ${otp}. This otp will expire after 5 min`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+}
+
+module.exports = { signup, signin, forgetPassword, changePassword };
