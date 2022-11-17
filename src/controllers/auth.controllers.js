@@ -160,7 +160,7 @@ async function signin(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function forgetPassword(req, res) {
+async function forgotPassword(req, res) {
   const { email } = req.body;
   try {
     const preUser = await User.findOne({ email: email });
@@ -183,10 +183,10 @@ async function forgetPassword(req, res) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-async function changePassword(req, res) {
-  const { otpCode, password, tutorId } = req.body;
+async function verifyOtp(req, res) {
+  const { otpCode, email } = req.body;
   try {
-    const otpData = await Otp.findOne({ otpCode });
+    const otpData = await Otp.findOne({ email, otpCode });
     if (!otpData) {
       res.status(404).json({ error: "Invalid Otp" });
     } else {
@@ -196,14 +196,19 @@ async function changePassword(req, res) {
         await Otp.findByIdAndDelete(otpData._id);
         res.status(404).json({ error: "Token Expired" });
       } else {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const updated = await User.findOneAndUpdate(
-          { tutor: tutorId },
-          { password: hashedPassword }
-        );
-        res.status(200).json(updated);
+        res.status(200).json({ message: "Otp verified successfully" });
       }
     }
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+}
+async function changePassword(req, res) {
+  const { password, email } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.findOneAndUpdate({ email: email }, { password: hashedPassword });
+    res.status(200).json({ message: "Password successfully changed" });
   } catch (error) {
     res.status(404).send(error.message);
   }
@@ -223,7 +228,7 @@ function sendMail(email, otp) {
     from: "educationists.org.pk",
     to: email,
     subject: "Reset Password",
-    text: `Otp for Reset Password  is ${otp}. This otp will expire after 5 min`,
+    text: `Verification code to reset your password is '${otp}'. This verification will expire after 5 min`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -235,4 +240,4 @@ function sendMail(email, otp) {
   });
 }
 
-module.exports = { signup, signin, forgetPassword, changePassword };
+module.exports = { signup, signin, verifyOtp, forgotPassword, changePassword };

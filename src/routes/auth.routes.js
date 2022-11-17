@@ -3,15 +3,17 @@ const express = require("express");
 const {
   signup,
   signin,
-  forgetPassword,
+  forgotPassword,
   changePassword,
+  verifyOtp,
 } = require("../controllers/auth.controllers");
 
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.post("/forget-password", forgetPassword);
+router.post("/forgot-password", forgotPassword);
+router.post("/verify-otp", verifyOtp);
 router.post("/change-password", changePassword);
 /* router.get("/get-users", getUsers);
 router.get("/get-user/:id", getSingleUser);
