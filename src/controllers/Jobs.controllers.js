@@ -1,4 +1,5 @@
 const Job = require("../models/job.model");
+const Application = require("../models/application.model")
 const pagination = require("../util/pagination");
 
 //////////////////////////////////////////////////////////////////////////////
@@ -39,6 +40,7 @@ async function getPaginatedJobs(req, res) {
 
   try {
     const docLength = await Job.countDocuments(filter).exec();
+    let jobIds = []
 
     const jobs = await Job.find(filter)
       .populate({ path: "user_id", select: ["_id", "name"] })
@@ -46,13 +48,27 @@ async function getPaginatedJobs(req, res) {
       .limit(limit)
       .sort({ _id: -1 })
       .exec();
+    jobs.forEach(job => jobIds.push(job._id))
+    console.log(jobIds)
+
+    const applications = await Application.find({
+      'job_id': {
+        $in: jobIds
+      }
+    }, {
+      _id: 1,
+      job_id: 1,
+      applicant_id: 1,
+    })
+
+    console.log(applications)
 
     const pageData = pagination(docLength, page, limit);
 
-    res.status(200).json({ pageData, jobs });
+    res.status(200).json({ pageData, jobs, applications });
     // console.log(jobs);
   } catch (error) {
-    res.status(404).json({ error });
+    res.status(404).json({ error: error.message });
   }
 }
 //////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,8 @@ const JobSchema = new mongoose.Schema({
 
   isFeatured: { type: Boolean, default: false },
   isOpen: { type: Boolean, default: true },
+
+  applicants: [{ type: String }]
 });
 
 const Job = new mongoose.model("Job", JobSchema);
