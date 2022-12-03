@@ -9,9 +9,9 @@ async function addBlacklist(req, res) {
     const tutor = await Tutor.create({ name, cnic, watsapp, profilePic, city });
     const data = await Blacklist.create({
       tutor_id: tutor._id,
-      user_id:user_id,
-      userModel:userModel,
-      reason:reason,
+      user_id: user_id,
+      userModel: userModel,
+      reason: reason,
     });
     res.status(201).json(data);
     console.log(data);
@@ -24,12 +24,15 @@ async function addBlacklist(req, res) {
 async function getBlacklists(req, res) {
   try {
     const data = await Blacklist.find()
-      .sort({ _id: -1 })
       .populate({
-        path: 'tutor_id', 
+        path: 'tutor_id',
         select: ['_id', 'name', 'cnic', 'watsapp', 'city']
       })
-      .populate("user_id")
+      .populate({
+        path: 'user_id',
+        select: ['name', 'owner']
+      })
+      .sort({ _id: -1 })
       .exec();
 
     res.status(200).json(data);
@@ -42,13 +45,13 @@ async function getBlacklists(req, res) {
 async function getCompleteBlacklists(req, res) {
   try {
     const data = await Blacklist.find()
-    .populate({
-      path: 'tutor_id', 
-      select: ['_id', 'name', 'cnic', 'watsapp', 'city','profilePic']
-    })
       .populate({
-        path: 'user_id', 
-        select: ['_id', 'name','owner', 'watsapp', 'city']
+        path: 'tutor_id',
+        select: ['_id', 'name', 'cnic', 'watsapp', 'city']
+      })
+      .populate({
+        path: 'user_id',
+        select: ['_id', 'name', 'owner', 'watsapp', 'city']
       })
       .exec();
 
