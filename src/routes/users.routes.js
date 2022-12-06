@@ -24,6 +24,7 @@ const {
   deleteTutor,
   getPaginatedTutors,
   getFeaturedTutorsPics,
+  getTutorProfile,
 } = require("../controllers/users.controllers");
 
 const router = express.Router();
@@ -42,6 +43,7 @@ router.get("/get-users", getUsers);
 router.get("/get-user/:id", getSingleUser);
 router.get("/get-institute/:id", getSingleInstitute);
 router.get("/get-tutor/:id", getSingleTutor);
+router.get("/get-tutor-profile/:id", getTutorProfile);
 router.patch("/update-tutor/:id", protect, updateTutorProfile);
 router.patch("/update-institute/:id", protect, updateTutorProfile);
 router.get("/verify-tutor/:id", verifyTutor);

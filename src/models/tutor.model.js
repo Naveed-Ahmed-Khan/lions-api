@@ -6,6 +6,7 @@ const TutorSchema = new mongoose.Schema({
   password: { type: String, required: false },
   account_id: { type: Id, ref: "Account", default: null },
   institute_id: { type: Id, ref: "Institute", default: null },
+  profileId: { type: String, required: true },
 
   name: { type: String, required: true },
   cnic: { type: Number, required: false },

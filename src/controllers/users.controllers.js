@@ -313,6 +313,27 @@ async function getSingleTutor(req, res) {
   }
 }
 
+async function getTutorProfile(req, res) {
+  const profileId = req.params.id;
+  try {
+    const userData = await Tutor.findOne({ profileId: profileId });
+    res.status(200).json(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
+async function getSingleTutor(req, res) {
+  const userId = req.params.id;
+  try {
+    const userData = await Tutor.findById(userId);
+    res.status(200).json(userData);
+    // console.log(userData);
+  } catch (error) {
+    res.status(404).send({ error });
+  }
+}
+
 //////////////////////////////////////////////////////////////////////////////
 async function getSingleInstitute(req, res) {
   const userId = req.params.id;
@@ -531,6 +552,7 @@ module.exports = {
   getStudents,
   getSingleUser,
   getSingleTutor,
+  getTutorProfile,
   updateTutorProfile,
   updateInstitute,
   blacklistTutor,
