@@ -23,10 +23,10 @@ async function signup(req, res) {
     } else {
       let userType = "";
       let userId = "";
-
+      const profileId = tutor.name.toLowerCase().replace(/ /g, "-");
       if (tutor) {
         const data = await Tutor.create({
-          ...tutor,
+          ...tutor, profileId
         });
         await Notification.create({
           tutor_id: data._id,
