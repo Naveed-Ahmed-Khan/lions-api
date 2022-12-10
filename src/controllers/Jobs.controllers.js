@@ -37,6 +37,9 @@ async function getPaginatedJobs(req, res) {
   if (query.area) {
     filter["location.place"] = query.area;
   }
+  if (query.name) {
+    filter["title"] = { $regex: query.name, $options: "i" };
+  }
 
   try {
     const docLength = await Job.countDocuments(filter).exec();
