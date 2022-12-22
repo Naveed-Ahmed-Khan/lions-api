@@ -19,7 +19,7 @@ async function getApplications(req, res) {
   try {
     const applications = await Application.find()
       .populate("job_id")
-      .populate("applicant_id")
+      .populate({ path: "applicant_id", select: ["_id", "name", "watsapp"] })
       .exec();
     res.status(200).json(applications);
     // console.log(applications);

@@ -22,7 +22,7 @@ async function getPayments(req, res) {
         {
           path: "app_id",
           populate: {
-            path: "applicant_id",
+            path: "applicant_id", select: ["_id", "name", "watsapp"]
           },
         },
         {
@@ -33,7 +33,6 @@ async function getPayments(req, res) {
         },
       ])
       .exec();
-    console.log(data);
     res.status(200).json(data);
     // console.log(data);
   } catch (error) {
